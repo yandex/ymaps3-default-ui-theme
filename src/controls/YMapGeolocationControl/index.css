@@ -1,0 +1,29 @@
+.ymaps3--geolocation-control {
+    display: block;
+
+    width: 24px;
+    height: 24px;
+
+    background: url('./geolocation-black.svg?inline') center / 24px 24px no-repeat;
+}
+
+.ymaps3--geolocation-control__dark {
+    background: url('./geolocation-white.svg?inline') center / 24px 24px no-repeat;
+}
+
+.ymaps3--geolocation-control-is-loading {
+    height: auto;
+
+    background: inherit;
+}
+
+.ymaps3--geolocation-control-self {
+    display: block;
+
+    width: 40px;
+    height: 40px;
+
+    background: url('./self.svg?inline') center / 24px 24px no-repeat;
+
+    transform: translate(-50%, -50%);
+}

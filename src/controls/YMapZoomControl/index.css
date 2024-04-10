@@ -1,0 +1,41 @@
+.ymaps3--zoom-control {
+    display: flex;
+}
+
+.ymaps3--zoom-control_vertical {
+    flex-direction: column;
+}
+
+.ymaps3--zoom-control_horizontal {
+    flex-direction: row-reverse;
+}
+
+.ymaps3--zoom-control__in {
+    display: block;
+
+    width: 24px;
+    height: 24px;
+
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    background: url('./zoom-in-black.svg?inline') center no-repeat;
+}
+
+.ymaps3--zoom-control__dark-in {
+    background: url('./zoom-in-white.svg?inline') center no-repeat;
+}
+
+.ymaps3--zoom-control__out {
+    display: block;
+
+    width: 24px;
+    height: 24px;
+
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    background: url('./zoom-out-black.svg?inline') center no-repeat;
+}
+
+.ymaps3--zoom-control__dark-out {
+    background: url('./zoom-out-white.svg?inline') center no-repeat;
+}

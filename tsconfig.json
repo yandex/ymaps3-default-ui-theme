@@ -1,0 +1,9 @@
+{
+    "extends": "@yandex/ymaps3-cli",
+    "compilerOptions": {
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "moduleResolution": "Node16",
+        "typeRoots": ["./node_modules/@types", "./node_modules/@yandex", "./types"]
+    },
+    "include": ["./src", "./node_modules/@yandex/ymaps3-cli/index.d.ts"]
+}

@@ -1,0 +1,36 @@
+.ymaps3--rotate-tilt_tilt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 32px;
+    height: 32px;
+
+    font-size: 16px;
+    cursor: pointer;
+    user-select: none;
+    pointer-events: all;
+
+    color: #4d4d4d;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.ymaps3--rotate-tilt_tilt:hover {
+    color: #050d33;
+}
+
+.ymaps3--rotate-tilt_tilt__tilted {
+    color: #fff;
+    background-color: #196dff;
+
+    transition: background-color 0.4s;
+}
+
+.ymaps3--rotate-tilt_tilt__tilted:hover {
+    color: #fff;
+}
+
+.ymaps3--rotate-tilt_tilt__in-action {
+    cursor: grabbing;
+}

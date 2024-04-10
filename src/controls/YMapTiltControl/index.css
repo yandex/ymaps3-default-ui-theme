@@ -1,0 +1,72 @@
+.ymaps3--tilt {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 48px;
+    height: 48px;
+
+    font-size: 19px;
+    cursor: pointer;
+    user-select: none;
+
+    color: #34374a;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 20%);
+}
+
+.ymaps3--tilt:hover {
+    color: #050d33;
+}
+
+.ymaps3--tilt_active {
+    color: #2e4ce5;
+
+    transition: color 0.4s;
+}
+
+.ymaps3--tilt_active:hover {
+    color: #2e4ce5;
+}
+
+.ymaps3--tilt_indicator_in {
+    width: 8px;
+    height: 7px;
+
+    background: url('./tilt-indicator.svg?inline') center no-repeat;
+}
+
+.ymaps3--tilt_indicator_out {
+    width: 8px;
+    height: 7px;
+
+    background: url('./tilt-indicator.svg?inline') center no-repeat;
+
+    transform: rotate(180deg);
+}
+
+.ymaps3--tilt_indicator__active {
+    background: url('./tilt-indicator_active.svg?inline') center no-repeat;
+
+    transition: background 0.4s;
+}
+
+.ymaps3--tilt_label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 24px;
+    height: 24px;
+    padding: 2px 0;
+}
+
+.ymaps3--tilt-control__in-action {
+    cursor: grabbing;
+}
+
+.hide-indicator {
+    display: none;
+}

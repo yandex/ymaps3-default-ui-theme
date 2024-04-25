@@ -181,10 +181,6 @@ class YMapZoomControl extends ymaps3.YMapComplexEntity<YMapZoomControlProps> {
     private _control!: YMapControl;
     private _zoom!: YMapZoomCommonControl;
 
-    protected __implGetDefaultProps(): DefaultProps {
-        return YMapZoomControl.defaultProps;
-    }
-
     protected override _onAttach(): void {
         this._zoom = new YMapZoomCommonControl(this._props);
         this._control = new ymaps3.YMapControl().addChild(this._zoom);

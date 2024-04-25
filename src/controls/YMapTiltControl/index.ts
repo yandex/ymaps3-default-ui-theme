@@ -1,6 +1,6 @@
 import type {EasingFunctionDescription, YMapControl, YMapListener} from '@yandex/ymaps3-types';
 import {YMapCameraRequest} from '@yandex/ymaps3-types/imperative/YMap';
-import {CLICK_TOLERANCE_PX, Position, degToRad, radToDeg, toggleTilt} from '../utils/angle-utils';
+import {CLICK_TOLERANCE_PX, Position, radToDeg, toggleTilt} from '../utils/angle-utils';
 import {YMapTiltControlVuefyOptions} from './vue';
 
 import './index.css';
@@ -37,10 +37,6 @@ export class YMapTiltControl extends ymaps3.YMapComplexEntity<YMapTiltControlPro
 
     constructor(props: YMapTiltControlProps) {
         super(props);
-    }
-
-    protected __implGetDefaultProps() {
-        return YMapTiltControl.defaultProps;
     }
 
     protected _onAttach(): void {
@@ -123,8 +119,8 @@ class InternalTiltControl extends ymaps3.YMapComplexEntity<YMapTiltControlProps>
             tilt,
             tiltRange: {min, max}
         } = this.root;
-        const targetTiltDeg = toggleTilt(radToDeg(tilt), min, max);
-        this.root.setCamera({tilt: degToRad(targetTiltDeg), duration, easing});
+        const targetTiltDeg = toggleTilt(tilt, min, max);
+        this.root.setCamera({tilt: targetTiltDeg, duration, easing});
     };
 
     private _onTiltStart = (event: MouseEvent) => {

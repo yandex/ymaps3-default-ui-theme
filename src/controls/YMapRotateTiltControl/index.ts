@@ -35,10 +35,6 @@ export class YMapRotateTiltControl extends ymaps3.YMapComplexEntity<YMapRotateTi
     private _tiltControl!: YMapTiltControl;
     private _control!: YMapControl;
 
-    protected __implGetDefaultProps() {
-        return YMapRotateTiltControl.defaultProps;
-    }
-
     constructor(props: YMapRotateTiltControlProps) {
         super(props);
     }

@@ -59,10 +59,6 @@ class YMapGeolocationControl extends ymaps3.YMapGroupEntity<YMapGeolocationContr
         this._handleGeolocationClick = this._handleGeolocationClick.bind(this);
     }
 
-    protected __implGetDefaultProps(): DefaultProps {
-        return YMapGeolocationControl.defaultProps;
-    }
-
     private _timeout: number;
     private _setLoading(loading: boolean): void {
         this._loading = loading;

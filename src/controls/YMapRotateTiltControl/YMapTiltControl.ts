@@ -1,7 +1,7 @@
 import type {YMapListener} from '@yandex/ymaps3-types';
 import {YMapCameraRequest} from '@yandex/ymaps3-types/imperative/YMap';
 import type {YMapRotateTiltControlProps} from '.';
-import {CLICK_TOLERANCE_PX, Position, degToRad, radToDeg, toggleTilt} from '../utils/angle-utils';
+import {CLICK_TOLERANCE_PX, Position, radToDeg, toggleTilt} from '../utils/angle-utils';
 import './YMapTiltControl.css';
 
 const TILT_CONTROL_CLASS = 'ymaps3--rotate-tilt_tilt';
@@ -54,8 +54,8 @@ export class YMapTiltControl extends ymaps3.YMapComplexEntity<YMapRotateTiltCont
             tilt,
             tiltRange: {max, min}
         } = this.root;
-        const targetTiltDeg = toggleTilt(radToDeg(tilt), min, max);
-        this.root.setCamera({tilt: degToRad(targetTiltDeg), duration, easing});
+        const targetTiltDeg = toggleTilt(tilt, min, max);
+        this.root.setCamera({tilt: targetTiltDeg, duration, easing});
     };
 
     private _onTiltStart = (event: MouseEvent) => {

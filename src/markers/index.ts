@@ -1,0 +1,9 @@
+export {
+    YMapDefaultMarker,
+    YMapDefaultMarkerProps,
+    MarkerColorProps,
+    MarkerPopupProps,
+    MarkerSizeProps,
+    ThemesColor
+} from './YMapDefaultMarker';
+export {YMapPopupMarker, YMapPopupMarkerProps, YMapPopupPositionProps, YMapPopupContentProps} from './YMapPopupMarker';

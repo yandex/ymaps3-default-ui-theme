@@ -1,6 +1,7 @@
 {
     "extends": "@yandex/ymaps3-cli",
     "compilerOptions": {
+        "moduleResolution": "Node16",
         "lib": ["dom", "dom.iterable", "esnext"],
         "moduleResolution": "Node16",
         "typeRoots": ["./node_modules/@types", "./node_modules/@yandex", "./types"]

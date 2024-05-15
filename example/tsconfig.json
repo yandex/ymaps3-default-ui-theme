@@ -2,8 +2,9 @@
     "extends": "../tsconfig.json",
     "compilerOptions": {
         "strict": false,
+        "moduleResolution": "Node16",
         "rootDirs": ["./", "../"],
-        "types": ["./types.d.ts", "../types/index.d.ts"]
+        "types": ["../types/index.d.ts"]
     },
     "include": ["./**/*.ts", "./**/*.tsx"]
 }

@@ -4,9 +4,9 @@
 
 Yandex JS API package
 
-[![npm version](https://badge.fury.io/js/%40ymaps3-world%2Fymaps3-default-ui-theme.svg)](https://badge.fury.io/js/%40ymaps3-world%2Fymaps3-default-ui-theme)
+[![npm version](https://badge.fury.io/js/%40yandex%2Fymaps3-default-ui-theme.svg)](https://badge.fury.io/js/%40yandex%2Fymaps3-default-ui-theme)
 [![npm](https://img.shields.io/npm/dm/@yandex/ymaps3-default-ui-theme.svg)](https://www.npmjs.com/package/@yandex/ymaps3-default-ui-theme)
-[![Build Status](https://github.com/ymaps3-world/@yandex/ymaps3-default-ui-theme/workflows/Run%20tests/badge.svg)](https://github.com/ymaps3-world/@yandex/ymaps3-default-ui-theme/actions/workflows/tests.yml)
+[![Build Status](https://github.com/yandex/@yandex/ymaps3-default-ui-theme/workflows/Run%20tests/badge.svg)](https://github.com/yandex/@yandex/ymaps3-default-ui-theme/actions/workflows/tests.yml)
 
 ## How use
 

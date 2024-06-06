@@ -1,4 +1,4 @@
-import {YMapMarker, YMapMarkerProps} from '@yandex/ymaps3-types';
+import {LngLat, YMapMarker, YMapMarkerProps} from '@yandex/ymaps3-types';
 import {YMapPopupMarkerReactifyOverride} from './react';
 import {YMapPopupMarkerVuefyOptions, YMapPopupMarkerVuefyOverride} from './vue';
 
@@ -62,6 +62,10 @@ export class YMapPopupMarker extends ymaps3.YMapComplexEntity<YMapPopupMarkerPro
     private _popupContainer: HTMLElement;
     private _popupTail: HTMLElement;
     private _marker: YMapMarker;
+
+    public get coordinates(): LngLat {
+        return this._marker.coordinates;
+    }
 
     private _togglePopup(forceShowPopup?: boolean): void {
         const openPopup = forceShowPopup ?? !this._props.show;

@@ -1,4 +1,4 @@
-import {YMapMarker, YMapMarkerProps} from '@yandex/ymaps3-types';
+import {LngLat, YMapMarker, YMapMarkerProps} from '@yandex/ymaps3-types';
 import {IconColor, IconName, iconColors, icons} from '../../icons';
 import {YMapPopupContentProps, YMapPopupMarker} from '../YMapPopupMarker';
 import {YMapDefaultMarkerReactifyOverride} from './react';
@@ -77,6 +77,10 @@ export class YMapDefaultMarker extends ymaps3.YMapComplexEntity<YMapDefaultMarke
     private _subtitleHint: HTMLElement;
 
     private _popup?: YMapPopupMarker;
+
+    public get coordinates(): LngLat {
+        return this._marker.coordinates;
+    }
 
     constructor(props: YMapDefaultMarkerProps) {
         super(props);

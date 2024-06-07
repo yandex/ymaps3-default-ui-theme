@@ -6,7 +6,7 @@ Yandex JS API package
 
 [![npm version](https://badge.fury.io/js/%40yandex%2Fymaps3-default-ui-theme.svg)](https://badge.fury.io/js/%40yandex%2Fymaps3-default-ui-theme)
 [![npm](https://img.shields.io/npm/dm/@yandex/ymaps3-default-ui-theme.svg)](https://www.npmjs.com/package/@yandex/ymaps3-default-ui-theme)
-[![Build Status](https://github.com/yandex/@yandex/ymaps3-default-ui-theme/workflows/Run%20tests/badge.svg)](https://github.com/yandex/@yandex/ymaps3-default-ui-theme/actions/workflows/tests.yml)
+[![Build Status](https://github.com/yandex/ymaps3-default-ui-theme/workflows/Run%20tests/badge.svg)](https://github.com/yandex/@yandex/ymaps3-default-ui-theme/actions/workflows/tests.yml)
 
 ## How use
 
@@ -16,10 +16,10 @@ The package is located in the `dist` folder:
 - `dist/esm` es6 modules for direct connection in your project
 - `dist/index.js` Yandex JS Module
 
-Recommended use `YMapButtonExample` as usual npm package:
+Recommended use `@yandex/ymaps3-default-ui-theme` as usual npm package:
 
 ```sh
-npm i @yandex/ymaps3-default-ui-theme
+npm install @yandex/ymaps3-default-ui-theme
 ```
 
 and dynamic import
@@ -29,36 +29,29 @@ await ymaps3.ready;
 
 // ...
 
-const {YMapButtonExample} = await import('@yandex/ymaps3-default-ui-theme');
+const {YMapZoomControl} = await import('@yandex/ymaps3-default-ui-theme');
 
 // ...
 
-map.addChild(new YMapButtonExample(props));
+map.addChild(new YMapDefaultMarker(props));
 ```
 
 ### Usage without npm
 
 You can use CDN with module loading handler in JS API on your page.
 
-Just use `ymaps3.import`:
-
-```js
-const pkg = await ymaps3.import('@yandex/ymaps3-default-ui-theme');
-```
-
 By default `ymaps3.import` can load self modules.
-If you want also load your package, should add `loader`:
+Just use `ymaps3.registerCdn` and `ymaps3.import`:
 
 ```js
-// Add loader at start loaders array
-ymaps3.import.loaders.unshift(async (pkg) => {
-    // Process only your package
-    if (!pkg.includes('@yandex/ymaps3-default-ui-theme')) return;
+// register in `ymaps3.import` which CDN to take the package from
+ymaps3.import.registerCdn(
+  'https://cdn.jsdelivr.net/npm/{package}',
+  '@yandex/ymaps3-default-ui-theme@latest'
+);
 
-    // Load script directly. You can use another CDN
-    await ymaps3.import.script(`https://unpkg.com/${pkg}/dist/index.js`);
+// ...
 
-    // Return result object
-    return window['@yandex/ymaps3-default-ui-theme'];
-});
+// import package from CDN
+const pkg = await ymaps3.import('@yandex/ymaps3-default-ui-theme');
 ```

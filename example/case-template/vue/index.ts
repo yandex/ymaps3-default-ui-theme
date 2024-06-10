@@ -1,4 +1,4 @@
-import {LOCATION} from '../common';
+import {CENTER, LOCATION} from '../common';
 
 window.map = null;
 
@@ -9,9 +9,9 @@ async function main() {
 
     const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls} = vuefy.module(ymaps3);
 
-    const {YMapZoomControl} = vuefy.module(await ymaps3.import('@yandex/ymaps3-controls@0.0.1'));
-
-    const {YMapButtonExample} = vuefy.module(await ymaps3.import('@yandex/ymaps3-default-ui-theme'));
+    const {YMapDefaultMarker, YMapZoomControl} = vuefy.module(
+        await ymaps3.import('@yandex/ymaps3-default-ui-theme')
+    );
 
     const app = Vue.createApp({
         components: {
@@ -19,15 +19,14 @@ async function main() {
             YMapDefaultSchemeLayer,
             YMapDefaultFeaturesLayer,
             YMapControls,
-            YMapZoomControl,
-            YMapButtonExample
+            YMapDefaultMarker,
+            YMapZoomControl
         },
         setup() {
             const refMap = (ref: any) => {
                 window.map = ref?.entity;
             };
-            const onClick = () => alert('Click!');
-            return {LOCATION, refMap, onClick};
+            return {LOCATION, CENTER, refMap};
         },
         template: `
             <YMap :location="LOCATION" :ref="refMap">
@@ -35,8 +34,8 @@ async function main() {
                 <YMapDefaultFeaturesLayer />
                 <YMapControls position="right">
                     <YMapZoomControl />
-                    <YMapButtonExample text="My button" :onClick="onClick" />
                 </YMapControls>
+                <YMapDefaultMarker :coordinates="CENTER" size="normal" iconName="fallback" />
             </YMap>`
     });
     app.mount('#app');

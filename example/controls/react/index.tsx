@@ -1,4 +1,4 @@
-import {LOCATION} from '../common';
+import {ENABLED_BEHAVIORS, LOCATION} from '../common';
 
 window.map = null;
 
@@ -9,9 +9,8 @@ async function main() {
 
     const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls} = reactify.module(ymaps3);
 
-    const {useState} = React;
-
-    const {YMapZoomControl} = reactify.module(await ymaps3.import('@yandex/ymaps3-default-ui-theme'));
+    const {YMapGeolocationControl, YMapRotateControl, YMapRotateTiltControl, YMapTiltControl, YMapZoomControl} =
+        reactify.module(await ymaps3.import('@yandex/ymaps3-default-ui-theme'));
 
     ReactDOM.render(
         <React.StrictMode>
@@ -21,17 +20,24 @@ async function main() {
     );
 
     function App() {
-        const [location] = useState(LOCATION);
+        const location = React.useMemo(() => LOCATION, []);
+        const behaviors = React.useMemo(() => ENABLED_BEHAVIORS, []);
 
         return (
-            <YMap location={location} ref={(x) => (map = x)}>
+            <YMap location={location} behaviors={behaviors} ref={(x) => (map = x)}>
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
-                <YMapControls position="right">
+                <YMapControls position="left">
                     <YMapZoomControl />
+                    <YMapGeolocationControl />
                 </YMapControls>
                 <YMapControls position="bottom">
                     <YMapZoomControl />
+                </YMapControls>
+                <YMapControls position="right">
+                    <YMapRotateTiltControl />
+                    <YMapRotateControl />
+                    <YMapTiltControl />
                 </YMapControls>
             </YMap>
         );

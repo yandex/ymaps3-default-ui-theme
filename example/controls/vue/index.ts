@@ -1,4 +1,4 @@
-import {LOCATION} from '../common';
+import {ENABLED_BEHAVIORS, LOCATION} from '../common';
 
 window.map = null;
 
@@ -9,7 +9,8 @@ async function main() {
 
     const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls} = vuefy.module(ymaps3);
 
-    const {YMapZoomControl} = vuefy.module(await ymaps3.import('@yandex/ymaps3-default-ui-theme'));
+    const {YMapGeolocationControl, YMapRotateControl, YMapRotateTiltControl, YMapTiltControl, YMapZoomControl} =
+        vuefy.module(await ymaps3.import('@yandex/ymaps3-default-ui-theme'));
 
     const app = Vue.createApp({
         components: {
@@ -17,23 +18,33 @@ async function main() {
             YMapDefaultSchemeLayer,
             YMapDefaultFeaturesLayer,
             YMapControls,
+            YMapGeolocationControl,
+            YMapRotateControl,
+            YMapRotateTiltControl,
+            YMapTiltControl,
             YMapZoomControl
         },
         setup() {
             const refMap = (ref: any) => {
                 window.map = ref?.entity;
             };
-            return {LOCATION, refMap};
+            return {LOCATION, ENABLED_BEHAVIORS, refMap};
         },
         template: `
-            <YMap :location="LOCATION" :ref="refMap">
+            <YMap :location="LOCATION" :behaviors="ENABLED_BEHAVIORS" :ref="refMap">
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
-                <YMapControls position="right">
+                <YMapControls position="left">
                     <YMapZoomControl />
+                    <YMapGeolocationControl />
                 </YMapControls>
                 <YMapControls position="bottom">
                     <YMapZoomControl />
+                </YMapControls>
+                <YMapControls position="right">
+                    <YMapRotateTiltControl />
+                    <YMapRotateControl />
+                    <YMapTiltControl />
                 </YMapControls>
             </YMap>`
     });

@@ -1,4 +1,4 @@
-import {LOCATION} from '../common';
+import {CENTER, LOCATION} from '../common';
 
 window.map = null;
 
@@ -9,11 +9,9 @@ async function main() {
 
     const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls} = reactify.module(ymaps3);
 
-    const {useState, useCallback} = React;
-
-    const {YMapZoomControl} = reactify.module(await ymaps3.import('@yandex/ymaps3-controls@0.0.1'));
-
-    const {YMapButtonExample} = reactify.module(await ymaps3.import('@yandex/ymaps3-default-ui-theme'));
+    const {YMapDefaultMarker, YMapZoomControl} = reactify.module(
+        await ymaps3.import('@yandex/ymaps3-default-ui-theme')
+    );
 
     ReactDOM.render(
         <React.StrictMode>
@@ -23,17 +21,14 @@ async function main() {
     );
 
     function App() {
-        const [location, setLocation] = useState(LOCATION);
-        const onClick = useCallback(() => alert('Click!'), []);
-
         return (
-            <YMap location={location} ref={(x) => (map = x)}>
+            <YMap location={LOCATION} ref={(x) => (map = x)}>
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
                 <YMapControls position="right">
                     <YMapZoomControl />
-                    <YMapButtonExample text={'My button'} onClick={onClick} />
                 </YMapControls>
+                <YMapDefaultMarker coordinates={CENTER} size="normal" iconName="fallback" />
             </YMap>
         );
     }

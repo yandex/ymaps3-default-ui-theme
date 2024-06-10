@@ -29,7 +29,7 @@ await ymaps3.ready;
 
 // ...
 
-const {YMapZoomControl} = await import('@yandex/ymaps3-default-ui-theme');
+const {YMapDefaultMarker} = await import('@yandex/ymaps3-default-ui-theme');
 
 // ...
 

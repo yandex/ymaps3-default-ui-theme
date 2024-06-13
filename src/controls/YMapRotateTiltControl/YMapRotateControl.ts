@@ -22,14 +22,13 @@ export class YMapRotateControl extends ymaps3.YMapGroupEntity<YMapRotateTiltCont
 
     constructor(props: YMapRotateTiltControlProps) {
         super(props);
-    }
-
-    protected _onAttach(): void {
         this._listener = new ymaps3.YMapListener({
             onUpdate: (event) => this._onMapUpdate(event.camera)
         });
         this.addChild(this._listener);
+    }
 
+    protected _onAttach(): void {
         this._element = document.createElement('ymaps3');
         this._element.classList.add(ROTATE_CONTROL_CLASS);
 

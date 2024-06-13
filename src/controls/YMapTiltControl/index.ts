@@ -37,9 +37,6 @@ export class YMapTiltControl extends ymaps3.YMapComplexEntity<YMapTiltControlPro
 
     constructor(props: YMapTiltControlProps) {
         super(props);
-    }
-
-    protected _onAttach(): void {
         this._control = new ymaps3.YMapControl({transparent: true});
         this._tiltControl = new InternalTiltControl(this._props);
 

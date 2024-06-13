@@ -32,14 +32,11 @@ type DefaultProps = typeof defaultProps;
 export class YMapRotateControl extends ymaps3.YMapComplexEntity<YMapRotateControlProps, DefaultProps> {
     static defaultProps = defaultProps;
     static [ymaps3.optionsKeyVuefy] = YMapRotateControlVuefyOptions;
-    private _control!: YMapControl;
-    private _rotateControl!: InternalRotateControl;
+    private _control: YMapControl;
+    private _rotateControl: InternalRotateControl;
 
     constructor(props: YMapRotateControlProps) {
         super(props);
-    }
-
-    protected _onAttach(): void {
         this._control = new ymaps3.YMapControl({transparent: true});
         this._rotateControl = new InternalRotateControl(this._props);
 
@@ -64,12 +61,15 @@ export class InternalRotateControl extends ymaps3.YMapComplexEntity<YMapRotateCo
     private _startMovePosition?: Position;
     private _startAzimuth?: number;
 
-    protected _onAttach(): void {
+    constructor(props: YMapRotateControlProps) {
+        super(props);
         this._listener = new ymaps3.YMapListener({
             onUpdate: (event) => this._onMapUpdate(event.camera)
         });
         this.addChild(this._listener);
+    }
 
+    protected _onAttach(): void {
         this._element = document.createElement('ymaps3');
         this._element.textContent = 'N';
         this._element.classList.add(ROTATE_CONTROL_CLASS);

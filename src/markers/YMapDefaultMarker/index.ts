@@ -198,6 +198,13 @@ export class YMapDefaultMarker extends ymaps3.YMapComplexEntity<YMapDefaultMarke
         this._marker.update({...this._props, onClick: this._onMarkerClick});
     }
 
+    protected override _onDetach(): void {
+        if (this._popup) {
+            this.removeChild(this._popup);
+        }
+        this.removeChild(this._marker);
+    }
+
     private _createPopupMarker() {
         return new YMapPopupMarker({
             ...this._props,

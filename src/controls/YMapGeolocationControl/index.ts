@@ -131,6 +131,8 @@ class YMapGeolocationControl extends ymaps3.YMapGroupEntity<YMapGeolocationContr
     }
 
     protected override _onDetach() {
+        this._control.removeChild(this._button);
+        this.removeChild(this._control);
         this._unwatchThemeContext?.();
     }
 

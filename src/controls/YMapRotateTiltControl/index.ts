@@ -37,9 +37,6 @@ export class YMapRotateTiltControl extends ymaps3.YMapComplexEntity<YMapRotateTi
 
     constructor(props: YMapRotateTiltControlProps) {
         super(props);
-    }
-
-    protected _onAttach(): void {
         this._control = new ymaps3.YMapControl({transparent: true});
         this._rotateControl = new YMapRotateControl(this._props);
         this._tiltControl = new YMapTiltControl(this._props);
@@ -48,6 +45,7 @@ export class YMapRotateTiltControl extends ymaps3.YMapComplexEntity<YMapRotateTi
         this._control.addChild(this._rotateControl);
         this.addChild(this._control);
     }
+
     protected _onUpdate(): void {
         this._rotateControl.update(this._props);
         this._tiltControl.update(this._props);

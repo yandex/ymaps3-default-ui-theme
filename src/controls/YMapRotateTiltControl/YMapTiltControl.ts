@@ -19,14 +19,13 @@ export class YMapTiltControl extends ymaps3.YMapComplexEntity<YMapRotateTiltCont
 
     constructor(props: YMapRotateTiltControlProps) {
         super(props);
-    }
-
-    protected _onAttach(): void {
         this._listener = new ymaps3.YMapListener({
             onUpdate: (event) => this._onMapUpdate(event.camera)
         });
         this.addChild(this._listener);
+    }
 
+    protected _onAttach(): void {
         this._element = document.createElement('ymaps3');
         this._element.classList.add(TILT_CONTROL_CLASS);
         const {tilt, tiltRange} = this.root;

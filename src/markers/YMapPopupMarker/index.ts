@@ -138,6 +138,10 @@ export class YMapPopupMarker extends ymaps3.YMapComplexEntity<YMapPopupMarkerPro
         this._marker.update(this._props);
     }
 
+    protected _onDetach(): void {
+        this.removeChild(this._marker);
+    }
+
     private _updateTheme() {
         const themeCtx = this._consumeContext(ymaps3.ThemeContext);
         const {theme} = themeCtx;

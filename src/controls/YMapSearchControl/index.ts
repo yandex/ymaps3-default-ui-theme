@@ -252,6 +252,7 @@ class YMapSearchControl extends ymaps3.YMapComplexEntity<YMapSearchControlProps>
     }
 
     protected override _onDetach(): void {
+        this._control.removeChild(this._search);
         this.removeChild(this._control);
     }
 }

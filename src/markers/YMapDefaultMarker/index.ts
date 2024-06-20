@@ -180,6 +180,11 @@ export class YMapDefaultMarker extends ymaps3.YMapComplexEntity<YMapDefaultMarke
             }
         }
 
+        if (this._props.iconName !== oldProps.iconName) {
+            const icon = this._getIcon();
+            this._icon.innerHTML = icon;
+        }
+
         this._titleHint.textContent = title ?? '';
         this._subtitleHint.textContent = subtitle ?? '';
         this._hintContainer.classList.toggle(HINT_CLASS_WITH_SUBTITLE, subtitle !== undefined);
@@ -318,7 +323,7 @@ export class YMapDefaultMarker extends ymaps3.YMapComplexEntity<YMapDefaultMarke
             return '';
         }
 
-        return icons[this._props.iconName];
+        return icons[this._props.iconName] ?? '';
     }
 
     private _getColor(): ThemesColor {

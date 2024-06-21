@@ -126,7 +126,7 @@ class YMapSearchCommonControl extends ymaps3.YMapComplexEntity<YMapSearchControl
         event.preventDefault();
 
         const activeSuggestUri = (this.children[0] as YMapSuggest)?.activeSuggest?.dataset?.uri;
-        const searchParams = activeSuggestUri ? {uri: activeSuggestUri} : {text: this._searchInput.value};
+        const searchParams = {uri: activeSuggestUri, text: this._searchInput.value};
 
         this._search(searchParams);
         this._resetInput();

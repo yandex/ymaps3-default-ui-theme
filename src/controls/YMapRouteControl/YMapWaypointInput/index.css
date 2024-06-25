@@ -1,0 +1,145 @@
+.ymaps3--route-control_waypoint-input {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .ymaps3--route-control_waypoint-input_form {
+        display: flex;
+        flex-direction: row;
+        padding: 4px 4px 4px 2px;
+        position: relative;
+        align-items: center;
+        align-self: stretch;
+    }
+
+    .ymaps3--route-control_waypoint-input_suggest {
+        position: absolute;
+        top: 48px;
+        z-index: 1000;
+
+        &._bottom {
+            top: unset;
+            bottom: 48px;
+        }
+    }
+
+    .ymaps3--route-control_waypoint-input__indicator {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 12px;
+
+        &.ymaps3--route-control_waypoint-input__indicator_empty {
+            color: #c8c9cc !important;
+        }
+    }
+    .ymaps3--route-control_waypoint-input__field {
+        box-sizing: border-box;
+        height: 40px;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background: #f6f6f6;
+        flex-grow: 1;
+        color: #000000;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+
+        &:focus {
+            border: 1px solid #196dff;
+        }
+    }
+
+    .ymaps3--route-control_waypoint-input__field-buttons {
+        display: none;
+        position: relative;
+    }
+
+    .ymaps3--route-control_waypoint-input__field:focus + .ymaps3--route-control_waypoint-input__field-buttons {
+        display: inline-block;
+    }
+
+    .ymaps3--route-control_waypoint-input__field:focus:placeholder-shown
+        + .ymaps3--route-control_waypoint-input__field-buttons {
+        .ymaps3--route-control_waypoint-input__field-buttons__location {
+            display: flex;
+        }
+    }
+
+    .ymaps3--route-control_waypoint-input__field:focus:not(:placeholder-shown)
+        + .ymaps3--route-control_waypoint-input__field-buttons {
+        .ymaps3--route-control_waypoint-input__field-buttons__reset {
+            display: flex;
+        }
+    }
+
+    .ymaps3--route-control_waypoint-input__field-buttons__location {
+        /* display: flex; */
+        display: none;
+        padding: 8px;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        transform: translate(-36px, -50%);
+        border-radius: 8px;
+        background: none;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        color: #196dff;
+
+        &:hover {
+            background: #122db20a;
+            color: #3c83ff;
+        }
+    }
+
+    .ymaps3--route-control_waypoint-input__field-buttons__reset {
+        /* display: flex; */
+        display: none;
+        padding: 8px;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        transform: translate(-36px, -50%);
+        border-radius: 8px;
+        background: none;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        color: #878787;
+
+        &:hover {
+            background: #122db20a;
+        }
+    }
+}
+
+/* dark theme styles */
+.ymaps3--route-control_waypoint-input._dark-input {
+    .ymaps3--route-control_waypoint-input__field {
+        background: #111111;
+        color: #cccccc;
+        &:focus {
+            border: 1px solid #3d7eff;
+        }
+    }
+    .ymaps3--route-control_waypoint-input__indicator_empty {
+        color: #666666 !important;
+    }
+    .ymaps3--route-control_waypoint-input__field-buttons__location {
+        color: #3d7eff;
+        &:hover {
+            background: #7d90f012;
+            color: #5794ff;
+        }
+    }
+    .ymaps3--route-control_waypoint-input__field-buttons__reset {
+        color: #999999;
+        &:hover {
+            background: #7d90f012;
+        }
+    }
+}

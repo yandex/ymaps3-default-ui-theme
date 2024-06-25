@@ -1,6 +1,6 @@
 import type {YMapLocationRequest, LngLat} from '@yandex/ymaps3-types';
 
-export const CENTER: LngLat = [55.442795, 25.24107];
+export const CENTER: LngLat = [37.617563, 55.755841];
 export const LOCATION: YMapLocationRequest = {center: CENTER, zoom: 14};
 
 export const POPUP_TEXT = 'Default text popup';

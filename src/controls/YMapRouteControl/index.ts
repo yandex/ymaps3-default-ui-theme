@@ -170,6 +170,8 @@ class YMapCommonRouteControl extends ymaps3.YMapComplexEntity<YMapRouteControlPr
             inputPlaceholder: this._props.waypointsPlaceholders[waypointIndex],
             waypoint,
             geolocationTextInput: geolocationTextInput,
+            search: this._props.search,
+            suggest: this._props.suggest,
             onSelectWaypoint: (result) => {
                 if (result === null) {
                     this._waypoints[waypointIndex] = null;

@@ -77,8 +77,8 @@ class YMapSuggest extends ymaps3.YMapComplexEntity<YMapSuggestProps> {
             element.classList.toggle(ACTIVE_CLASS, index === activeIndex);
         });
 
-        if (suggestElements[activeIndex] && suggestElements[activeIndex]?.dataset?.title) {
-            this._props.setSearchInputValue(suggestElements[activeIndex].dataset.title);
+        if (suggestElements[activeIndex] && suggestElements[activeIndex]?.dataset?.text) {
+            this._props.setSearchInputValue(suggestElements[activeIndex].dataset.text);
         }
     };
 
@@ -222,7 +222,7 @@ class YMapSuggestItem extends ymaps3.YMapComplexEntity<YMapSuggestItemProps> {
         this._rootElement.classList.add(SUGGEST_ITEM_CLASS);
         this._rootElement.tabIndex = -1;
         this._rootElement.addEventListener('click', this._props.onClick);
-        this._rootElement.dataset.title = this._props.suggestItem.title.text;
+        this._rootElement.dataset.text = this._props.suggestItem.title.text;
         if (this._props.suggestItem?.uri) {
             this._rootElement.dataset.uri = this._props.suggestItem.uri;
         }

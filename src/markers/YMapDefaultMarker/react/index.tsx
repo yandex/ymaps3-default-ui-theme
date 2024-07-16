@@ -1,13 +1,13 @@
 import {YMapEntity} from '@yandex/ymaps3-types';
 import {CustomReactify, OverrideProps, Prettify} from '@yandex/ymaps3-types/reactify/reactify';
 import type TReact from 'react';
-import {YMapDefaultMarkerProps, YMapDefaultMarker as YMapDefaultMarkerI} from '..';
+import {YMapDefaultMarkerProps, MarkerPopupProps, YMapDefaultMarker as YMapDefaultMarkerI} from '..';
 
 type YMapDefaultMarkerReactifiedProps = Prettify<
     OverrideProps<
         YMapDefaultMarkerProps,
         {
-            popup?: {
+            popup?: Omit<MarkerPopupProps, 'content'> & {
                 /** The function of creating popup content */
                 content: string | (() => TReact.ReactElement);
             };
@@ -29,7 +29,7 @@ export const YMapDefaultMarkerReactifyOverride: CustomReactify<YMapDefaultMarker
         const [popupElement] = React.useState(document.createElement('ymaps3'));
         const [content, setContent] = React.useState<React.ReactElement>();
 
-        const popupContent = React.useMemo(() => {
+        const popup = React.useMemo(() => {
             if (props.popup === undefined) {
                 return undefined;
             }
@@ -40,12 +40,12 @@ export const YMapDefaultMarkerReactifyOverride: CustomReactify<YMapDefaultMarker
                 setContent(props.popup.content());
             }
 
-            return {content: () => popupElement};
+            return {...props.popup, content: () => popupElement};
         }, [props.popup, popupElement]);
 
         return (
             <>
-                <YMapDefaultMarkerReactified {...props} popup={popupContent} ref={ref} />
+                <YMapDefaultMarkerReactified {...props} popup={popup} ref={ref} />
                 {ReactDOM.createPortal(content, popupElement)}
             </>
         );

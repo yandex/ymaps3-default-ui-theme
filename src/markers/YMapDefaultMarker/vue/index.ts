@@ -4,7 +4,12 @@ import type TVue from '@vue/runtime-core';
 import {YMapDefaultMarker, YMapDefaultMarkerProps, MarkerColorProps, MarkerPopupProps, MarkerSizeProps} from '../';
 import {IconName} from '../../../icons';
 
-export const YMapDefaultMarkerVuefyOptions: CustomVuefyOptions<YMapDefaultMarker> = {
+type VuefyMarkerPopup = Omit<MarkerPopupProps, 'content'>;
+
+export const YMapDefaultMarkerVuefyOptions: CustomVuefyOptions<
+    YMapDefaultMarker,
+    Omit<YMapDefaultMarkerProps, 'popup'> & {popup: VuefyMarkerPopup}
+> = {
     props: {
         coordinates: {type: Object, required: true},
         source: String,
@@ -29,7 +34,7 @@ export const YMapDefaultMarkerVuefyOptions: CustomVuefyOptions<YMapDefaultMarker
         title: {type: String},
         subtitle: {type: String},
         staticHint: {type: Boolean, default: true},
-        popup: {type: Object as TVue.PropType<MarkerPopupProps>}
+        popup: {type: Object as TVue.PropType<VuefyMarkerPopup>}
     }
 };
 
@@ -43,11 +48,10 @@ export const YMapDefaultMarkerVuefyOverride: CustomVuefyFn<YMapDefaultMarker> = 
     {vuefy, Vue}
 ) => {
     const YMapDefaultMarkerV = vuefy.entity(YMapDefaultMarkerI);
-    const {popup, ...overridedProps} = props;
 
     return Vue.defineComponent({
         name: 'YMapDefaultMarker',
-        props: overridedProps,
+        props,
         slots: Object as TVue.SlotsType<YMapDefaultMarkerSlots>,
         setup(props, {slots, expose}) {
             const content: TVue.Ref<TVue.VNodeChild | null> = Vue.ref(null);
@@ -61,7 +65,7 @@ export const YMapDefaultMarkerVuefyOverride: CustomVuefyFn<YMapDefaultMarker> = 
                     return undefined;
                 }
                 content.value = slots.popupContent();
-                return {content: () => popupHTMLElement};
+                return {...props.popup, content: () => popupHTMLElement};
             });
             expose({entity: markerEntity});
             return () =>

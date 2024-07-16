@@ -258,18 +258,26 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
     }
 
     private async _search(params: SearchParams, reverseGeocodingCoordinate?: LngLat) {
-        const searchResult = (await this._props.search?.({params, map: this.root})) ?? (await ymaps3.search(params));
-        if (searchResult.length === 0) {
-            return;
-        }
+        try {
+            const searchResult =
+                (await this._props.search?.({params, map: this.root})) ?? (await ymaps3.search(params));
 
-        const feature = searchResult[0];
-        if (reverseGeocodingCoordinate) {
-            this._inputEl.value = feature.properties.name;
-            feature.geometry.coordinates = reverseGeocodingCoordinate;
+            if (searchResult.length === 0) {
+                return;
+            }
+
+            const feature = searchResult[0];
+            if (reverseGeocodingCoordinate) {
+                this._inputEl.value = feature.properties.name;
+                feature.geometry.coordinates = reverseGeocodingCoordinate;
+            }
+            this._updateIndicatorStatus('setted');
+            this._props.onSelectWaypoint({feature});
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(error);
+            this._updateIndicatorStatus('empty');
         }
-        this._updateIndicatorStatus('setted');
-        this._props.onSelectWaypoint({feature});
     }
 
     private _onMapMouseLeave = (object: DomEventHandlerObject, event: DomEvent): void => {

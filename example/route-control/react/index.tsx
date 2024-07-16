@@ -18,8 +18,7 @@ async function main() {
     const [ymaps3React] = await Promise.all([ymaps3.import('@yandex/ymaps3-reactify'), ymaps3.ready]);
     const reactify = ymaps3React.reactify.bindTo(React, ReactDOM);
 
-    const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls, YMapFeature} =
-        reactify.module(ymaps3);
+    const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls, YMapFeature} = reactify.module(ymaps3);
     const {YMapRouteControl, YMapDefaultMarker} = reactify.module(
         await ymaps3.import('@yandex/ymaps3-default-ui-theme')
     );
@@ -39,6 +38,7 @@ async function main() {
         const [fromCoords, setFromCoords] = React.useState<LngLat | undefined>();
         const [toCoords, setToCoords] = React.useState<LngLat | undefined>();
         const [previewCoords, setPreviewCoords] = React.useState<LngLat | undefined>();
+        const [waypoints, setWaypoints] = React.useState<[LngLat, LngLat]>([LOCATION.center, null]);
 
         const onRouteResult = React.useCallback((result: BaseRouteResponse, type: RouteOptions['type']) => {
             setRouteType(type);
@@ -53,7 +53,7 @@ async function main() {
             setFromCoords(from?.geometry?.coordinates);
             setToCoords(to?.geometry?.coordinates);
 
-            if (!from && !to) {
+            if (!from || !to) {
                 setShowFeature(false);
             }
             setPreviewCoords(undefined);
@@ -69,6 +69,20 @@ async function main() {
             },
             []
         );
+
+        const onDragEndHandler = React.useCallback(
+            (coordinates: LngLat, type: 'from' | 'to') => {
+                if (type === 'from') {
+                    setFromCoords(coordinates);
+                    setWaypoints([coordinates, toCoords]);
+                } else {
+                    setToCoords(coordinates);
+                    setWaypoints([fromCoords, coordinates]);
+                }
+            },
+            [fromCoords, toCoords]
+        );
+
         const features = React.useMemo(() => {
             if (!routeResult) {
                 return null;
@@ -96,7 +110,7 @@ async function main() {
                 <YMapControls position="top left">
                     <YMapRouteControl
                         truckParameters={TRUCK_PARAMS}
-                        waypoints={[LOCATION.center, null]}
+                        waypoints={waypoints}
                         onRouteResult={onRouteResult}
                         onUpdateWaypoints={onUpdateWaypoints}
                         onBuildRouteError={onBuildRouteError}
@@ -105,8 +119,22 @@ async function main() {
                 </YMapControls>
 
                 {showFeature && features}
-                {fromCoords !== undefined && <YMapDefaultMarker coordinates={fromCoords} {...FROM_POINT_STYLE} />}
-                {toCoords !== undefined && <YMapDefaultMarker coordinates={toCoords} {...TO_POINT_STYLE} />}
+                {fromCoords !== undefined && (
+                    <YMapDefaultMarker
+                        coordinates={fromCoords}
+                        draggable
+                        onDragEnd={(coordinates) => onDragEndHandler(coordinates, 'from')}
+                        {...FROM_POINT_STYLE}
+                    />
+                )}
+                {toCoords !== undefined && (
+                    <YMapDefaultMarker
+                        coordinates={toCoords}
+                        draggable
+                        onDragEnd={(coordinates) => onDragEndHandler(coordinates, 'to')}
+                        {...TO_POINT_STYLE}
+                    />
+                )}
                 {previewCoords !== undefined && (
                     <YMapDefaultMarker coordinates={previewCoords} {...PREVIEW_POINT_STYLE} />
                 )}

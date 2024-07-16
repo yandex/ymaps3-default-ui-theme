@@ -1,3 +1,4 @@
+import debounce from 'lodash/debounce';
 import {
     BaseRouteResponse,
     DomDetach,
@@ -21,6 +22,7 @@ import {
 } from './helpers';
 import './index.css';
 import {formatDistance, formatDuration} from './utils';
+import {YMapRouteControlVuefyOptions} from './vue';
 
 export type WaypointsArray = Array<SelectWaypointArgs['feature'] | null>;
 
@@ -59,6 +61,7 @@ type DefaultProps = typeof defaultProps;
 
 export class YMapRouteControl extends ymaps3.YMapComplexEntity<YMapRouteControlProps, DefaultProps> {
     static defaultProps = defaultProps;
+    static [ymaps3.optionsKeyVuefy] = YMapRouteControlVuefyOptions;
 
     private _control: YMapControl;
     private _router: YMapCommonRouteControl;
@@ -74,6 +77,10 @@ export class YMapRouteControl extends ymaps3.YMapComplexEntity<YMapRouteControlP
         this._control.addChild(this._router);
 
         this._addDirectChild(this._control);
+    }
+
+    protected _onUpdate(props: Partial<YMapRouteControlProps>): void {
+        this._router.update(props);
     }
 
     protected _onDetach(): void {
@@ -154,6 +161,13 @@ class YMapCommonRouteControl extends ymaps3.YMapComplexEntity<YMapRouteControlPr
         );
     }
 
+    protected _onUpdate(diffProps: Partial<YMapRouteControlProps>): void {
+        if (diffProps.waypoints) {
+            this._waypointInputFromElement.update({waypoint: diffProps.waypoints[0]});
+            this._waypointInputToElement.update({waypoint: diffProps.waypoints[1]});
+        }
+    }
+
     protected _onDetach(): void {
         this._detachDom?.();
         this._detachDom = undefined;
@@ -215,7 +229,7 @@ class YMapCommonRouteControl extends ymaps3.YMapComplexEntity<YMapRouteControlPr
         this._route();
     };
 
-    private async _route() {
+    private _route = debounce(async () => {
         if (!this._waypoints.every((point) => point !== null)) {
             return;
         }
@@ -245,7 +259,7 @@ class YMapCommonRouteControl extends ymaps3.YMapComplexEntity<YMapRouteControlPr
             this._routeInfoElement.classList.add('ymaps3--route-control_info__error');
             this._routeInfoElement.replaceChildren(...createRouteServerError(() => this._route()));
         }
-    }
+    }, 200);
 
     private _getRouteDetails(response: BaseRouteResponse): HTMLElement[] {
         if (!response.toSteps) {

@@ -1,17 +1,19 @@
-import debounce from 'lodash/debounce';
+import type TVue from '@vue/runtime-core';
 import {
     BaseRouteResponse,
     DomDetach,
     Feature,
     LngLat,
-    YMap,
-    YMapControl,
     SearchResponse,
-    SuggestResponse
+    SuggestResponse,
+    YMap,
+    YMapControl
 } from '@yandex/ymaps3-types';
 import {RouteOptions, TruckParameters} from '@yandex/ymaps3-types/imperative/route';
+import {CustomVuefyOptions} from '@yandex/ymaps3-types/modules/vuefy';
+import debounce from 'lodash/debounce';
 import {CustomSearch, CustomSuggest} from '../YMapSearchControl';
-import {YMapWaypointInput, YMapWaypointInputProps, SelectWaypointArgs} from './YMapWaypointInput';
+import {SelectWaypointArgs, YMapWaypointInput, YMapWaypointInputProps} from './YMapWaypointInput';
 import {
     createActionsContainer,
     createInfoElementComponent,
@@ -22,7 +24,6 @@ import {
 } from './helpers';
 import './index.css';
 import {formatDistance, formatDuration} from './utils';
-import {YMapRouteControlVuefyOptions} from './vue';
 
 export type WaypointsArray = Array<SelectWaypointArgs['feature'] | null>;
 
@@ -41,6 +42,7 @@ export type YMapRouteControlProps = {
     truckParameters?: TruckParameters;
     waypoints?: [LngLat | null, LngLat | null];
     waypointsPlaceholders?: [string, string];
+    autofocus?: boolean;
     search?: (args: CustomSearch) => Promise<SearchResponse> | SearchResponse;
     suggest?: (args: CustomSuggest) => Promise<SuggestResponse> | SuggestResponse;
     route?: (args: CustomRoute) => Promise<BaseRouteResponse[]> | BaseRouteResponse[];
@@ -55,9 +57,33 @@ const defaultProps = Object.freeze({
     clearFieldsText: 'Сбросить',
     changeOrderText: 'Поменять порядок',
     waypointsPlaceholders: ['Откуда', 'Куда'],
-    availableTypes: ['driving', 'truck', 'walking', 'transit']
+    availableTypes: ['driving', 'truck', 'walking', 'transit'],
+    autofocus: true
 });
 type DefaultProps = typeof defaultProps;
+
+const YMapRouteControlVuefyOptions: CustomVuefyOptions<YMapRouteControl> = {
+    props: {
+        geolocationTextInput: String,
+        clearFieldsText: String,
+        changeOrderText: String,
+        availableTypes: Array as TVue.PropType<AvailableTypes[]>,
+        truckParameters: Object as TVue.PropType<TruckParameters>,
+        waypoints: Array as unknown as TVue.PropType<[LngLat | null, LngLat | null]>,
+        waypointsPlaceholders: Array as unknown as TVue.PropType<[string, string]>,
+        search: Function as TVue.PropType<YMapRouteControlProps['search']>,
+        suggest: Function as TVue.PropType<YMapRouteControlProps['suggest']>,
+        route: Function as TVue.PropType<YMapRouteControlProps['route']>,
+        onMouseMoveOnMap: Function as TVue.PropType<YMapRouteControlProps['onMouseMoveOnMap']>,
+        onUpdateWaypoints: Function as TVue.PropType<YMapRouteControlProps['onUpdateWaypoints']>,
+        onRouteResult: Function as TVue.PropType<YMapRouteControlProps['onRouteResult']>,
+        onBuildRouteError: Function as TVue.PropType<YMapRouteControlProps['onBuildRouteError']>,
+        autofocus: {
+            type: Boolean as TVue.PropType<YMapRouteControlProps['autofocus']>,
+            default: defaultProps.autofocus
+        }
+    }
+};
 
 export class YMapRouteControl extends ymaps3.YMapComplexEntity<YMapRouteControlProps, DefaultProps> {
     static defaultProps = defaultProps;
@@ -98,6 +124,8 @@ class YMapCommonRouteControl extends ymaps3.YMapComplexEntity<YMapRouteControlPr
     private _waypointInputFromElement: YMapWaypointInput;
     private _waypointInputToElement: YMapWaypointInput;
     private _actionsContainerElement: HTMLElement;
+    private _changeOrderButton: HTMLButtonElement;
+    private _clearFieldsButton: HTMLButtonElement;
 
     private _waypoints: WaypointsArray = [null, null];
 
@@ -132,8 +160,10 @@ class YMapCommonRouteControl extends ymaps3.YMapComplexEntity<YMapRouteControlPr
             clearFieldsText: this._props.clearFieldsText,
             changeOrderText: this._props.changeOrderText
         });
-        changeOrderButton.addEventListener('click', this._changeOrder);
-        clearFieldsButton.addEventListener('click', this._clearAll);
+        this._changeOrderButton = changeOrderButton;
+        this._changeOrderButton.addEventListener('click', this._changeOrder);
+        this._clearFieldsButton = clearFieldsButton;
+        this._clearFieldsButton.addEventListener('click', this._clearAll);
         this._actionsContainerElement = container;
         this._routeParametersElement.appendChild(this._actionsContainerElement);
 
@@ -162,9 +192,27 @@ class YMapCommonRouteControl extends ymaps3.YMapComplexEntity<YMapRouteControlPr
     }
 
     protected _onUpdate(diffProps: Partial<YMapRouteControlProps>): void {
-        if (diffProps.waypoints) {
+        if (diffProps.waypoints !== undefined) {
             this._waypointInputFromElement.update({waypoint: diffProps.waypoints[0]});
             this._waypointInputToElement.update({waypoint: diffProps.waypoints[1]});
+        }
+        if (diffProps.geolocationTextInput !== undefined) {
+            this._waypointInputFromElement.update({geolocationTextInput: diffProps.geolocationTextInput});
+            this._waypointInputToElement.update({geolocationTextInput: diffProps.geolocationTextInput});
+        }
+        if (diffProps.waypointsPlaceholders !== undefined) {
+            this._waypointInputFromElement.update({inputPlaceholder: diffProps.waypointsPlaceholders[0]});
+            this._waypointInputToElement.update({inputPlaceholder: diffProps.waypointsPlaceholders[1]});
+        }
+        if (diffProps.clearFieldsText !== undefined) {
+            this._clearFieldsButton.textContent = diffProps.clearFieldsText;
+        }
+        if (diffProps.changeOrderText !== undefined) {
+            this._changeOrderButton.textContent = diffProps.changeOrderText;
+        }
+        if (diffProps.availableTypes !== undefined) {
+            this._routeModesElement.replaceChildren(...createSegmentedControl(diffProps.availableTypes).children);
+            this._setRouteMode(diffProps.availableTypes[0]);
         }
     }
 
@@ -204,8 +252,12 @@ class YMapCommonRouteControl extends ymaps3.YMapComplexEntity<YMapRouteControlPr
     }
 
     private _clearAll = () => {
-        this._waypointInputToElement.update({waypoint: null});
         this._waypointInputFromElement.update({waypoint: null});
+        this._waypointInputToElement.update({waypoint: null});
+        this._routeInfoElement.replaceChildren();
+        if (this._routeInfoElement.parentElement === this._rootElement) {
+            this._rootElement.removeChild(this._routeInfoElement);
+        }
     };
 
     private _changeOrder = () => {
@@ -218,16 +270,32 @@ class YMapCommonRouteControl extends ymaps3.YMapComplexEntity<YMapRouteControlPr
         this._waypoints[index] = feature;
         this._props.onUpdateWaypoints?.(this._waypoints);
 
+        if (this._props.autofocus) {
+            this._autofocusNextInput(index);
+        }
+
         if (this._waypoints.every((point) => point !== null)) {
             this._route();
         }
     }
 
+    private _autofocusNextInput(index: number): void {
+        if (index === 0 && this._waypoints[1] === null) {
+            this._waypointInputToElement.triggerFocus();
+        } else if (index === 1 && this._waypoints[0] === null) {
+            this._waypointInputFromElement.triggerFocus();
+        }
+    }
+
     private _onUpdateRouteMode = (e: Event) => {
         const target = e.target as HTMLInputElement;
-        this._routeMode = target.value as RouteOptions['type'];
-        this._route();
+        this._setRouteMode(target.value as RouteOptions['type']);
     };
+
+    private _setRouteMode(mode: AvailableTypes): void {
+        this._routeMode = mode;
+        this._route();
+    }
 
     private _route = debounce(async () => {
         if (!this._waypoints.every((point) => point !== null)) {

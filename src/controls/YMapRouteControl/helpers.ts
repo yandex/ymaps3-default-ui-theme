@@ -14,6 +14,8 @@ const svgIcons: Record<AvailableTypes, string> = {
     transit: transitSVG
 };
 
+const ALLOWED_TYPES: AvailableTypes[] = ['driving', 'truck', 'walking', 'transit'];
+
 export function createSegmentedControl(availableTypes: AvailableTypes[]): HTMLElement {
     const element = document.createElement('ymaps3');
     element.classList.add('ymaps3--route-control_modes');
@@ -27,8 +29,8 @@ export function createSegmentedControl(availableTypes: AvailableTypes[]): HTMLEl
     }
 
     const options: {option: HTMLInputElement; label: HTMLLabelElement}[] = [];
-    (['driving', 'truck', 'walking', 'transit'] as AvailableTypes[]).forEach((routeType) => {
-        if (!availableTypes.includes(routeType)) {
+    availableTypes.forEach((routeType) => {
+        if (!ALLOWED_TYPES.includes(routeType)) {
             return;
         }
         const option = document.createElement('input');

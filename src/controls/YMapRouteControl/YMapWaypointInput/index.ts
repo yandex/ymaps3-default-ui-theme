@@ -60,6 +60,10 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
         return document.activeElement === this._inputEl;
     }
 
+    public triggerFocus(): void {
+        this._inputEl.focus();
+    }
+
     constructor(props: YMapWaypointInputProps) {
         super(props, {container: true});
 
@@ -151,7 +155,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
         }
     }
 
-    protected _onUpdate(): void {
+    protected _onUpdate(diffProps: Partial<YMapWaypointInputProps>): void {
         if (this._props.waypoint !== undefined) {
             if (this._props.waypoint === null) {
                 this._props.waypoint = undefined;
@@ -159,6 +163,10 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
             } else {
                 this._search({text: this._props.waypoint.toString()}, this._props.waypoint);
             }
+        }
+
+        if (diffProps.inputPlaceholder !== undefined) {
+            this._inputEl.placeholder = diffProps.inputPlaceholder;
         }
     }
 

@@ -1,5 +1,5 @@
 {
-    "version": "0.0.6",
+    "version": "0.0.7",
     "name": "@yandex/ymaps3-default-ui-theme",
     "description": "Yandex Maps JS API 3.0 example @yandex/ymaps3-default-ui-theme",
     "types": "./dist/types/index.d.ts",

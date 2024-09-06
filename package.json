@@ -10,7 +10,7 @@
         "build": "npm run build:prod && npm run build:esm",
         "build:dev": "webpack --mode=development",
         "build:prod": "webpack --mode=production --node-env=production",
-        "build:esm": "rm -rf ./dist/esm && tsc --project tsconfig.build.json --target es2018 --module es6 --outDir dist/esm",
+        "build:esm": "rm -rf ./dist/esm && tsc --project tsconfig.build.json --target es2018 --module es2022 --outDir dist/esm",
         "examples": "ymaps3-cli example --input=example --output=dist/example",
         "watch": "webpack --watch",
         "start": "webpack serve",

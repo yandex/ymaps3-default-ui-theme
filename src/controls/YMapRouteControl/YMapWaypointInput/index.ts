@@ -23,6 +23,8 @@ const INDICATOR_COLORS = {
     dark: {from: '#D6FD63', to: '#C8D2E6'}
 };
 
+const DELAY_BETWEEN_BLUR_AND_CLICK = 200;
+
 export type SelectWaypointArgs = {
     feature: SearchResponseFeature;
 };
@@ -36,10 +38,14 @@ export type YMapWaypointInputProps = {
     suggest?: (args: CustomSuggest) => Promise<SuggestResponse> | SuggestResponse;
     onSelectWaypoint?: (args: SelectWaypointArgs | null) => void;
     onMouseMoveOnMap?: (coordinates: LngLat, lastCall: boolean) => void;
+    onError?: () => void;
 };
 
 const defaultProps = Object.freeze({geolocationTextInput: 'My location'});
 
+/**
+ * @internal
+ */
 export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInputProps, typeof defaultProps> {
     static defaultProps = defaultProps;
     private _detachDom?: DomDetach;
@@ -56,9 +62,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
     private _isBottomPosition: boolean;
     private _isHoverMode = false;
 
-    private get _isInputFocused(): boolean {
-        return document.activeElement === this._inputEl;
-    }
+    private _isInputFocused: boolean = false;
 
     public triggerFocus(): void {
         this._inputEl.focus();
@@ -113,11 +117,13 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
         form.appendChild(fieldButton);
 
         this._locationButton = document.createElement('button');
+        this._locationButton.addEventListener('mousedown', this._getGeolocation);
         this._locationButton.classList.add('ymaps3--route-control_waypoint-input__field-buttons__location');
         this._locationButton.insertAdjacentHTML('afterbegin', locationSVG);
         fieldButton.appendChild(this._locationButton);
 
         this._resetButton = document.createElement('button');
+        this._resetButton.addEventListener('mousedown', this._resetInput);
         this._resetButton.classList.add('ymaps3--route-control_waypoint-input__field-buttons__reset');
         this._resetButton.insertAdjacentHTML('afterbegin', resetSVG);
         fieldButton.appendChild(this._resetButton);
@@ -192,11 +198,12 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
         }
     }
 
-    private _resetInput() {
+    private _resetInput = () => {
         this._inputEl.value = '';
+        this._suggestComponent.update({searchInputValue: ''});
         this._updateIndicatorStatus('empty');
         this._props.onSelectWaypoint(null);
-    }
+    };
 
     private _onUpdateWaypoint = debounce((e: Event) => {
         const target = e.target as HTMLInputElement;
@@ -204,6 +211,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
     }, 200);
 
     private _onFocusInput = (_event: FocusEvent) => {
+        this._isInputFocused = true;
         this._addDirectChild(this._suggestComponent);
         this._updateIndicatorStatus('focus');
     };
@@ -216,15 +224,12 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
         if (event.relatedTarget !== this._suggestComponent.activeSuggest) {
             this._removeDirectChild(this._suggestComponent);
         }
-        if (event.relatedTarget === this._locationButton) {
-            this._getGeolocation();
-            return;
-        }
-        if (event.relatedTarget === this._resetButton) {
-            this._resetInput();
-            return;
-        }
+
         this._updateIndicatorStatus('empty');
+        // HACK: to check that input had focus before the click
+        setTimeout(() => {
+            this._isInputFocused = false;
+        }, DELAY_BETWEEN_BLUR_AND_CLICK);
     };
 
     private _submitWaypointInput = (event?: SubmitEvent) => {
@@ -252,7 +257,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
         }
     };
 
-    private async _getGeolocation() {
+    private _getGeolocation = async () => {
         const text = this._props.geolocationTextInput;
         this._inputEl.value = text;
 
@@ -263,7 +268,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
         };
         this._updateIndicatorStatus('setted');
         this._props.onSelectWaypoint({feature});
-    }
+    };
 
     private async _search(params: SearchParams, reverseGeocodingCoordinate?: LngLat) {
         try {
@@ -285,6 +290,8 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
             // eslint-disable-next-line no-console
             console.error(error);
             this._updateIndicatorStatus('empty');
+            this._inputEl.value = '';
+            this._props.onError?.();
         }
     }
 
@@ -305,6 +312,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
     private _onMapFastClick = (object: DomEventHandlerObject, event: DomEvent): void => {
         if (this._isInputFocused) {
             this._isHoverMode = false;
+            this._isInputFocused = false;
             this._props.onMouseMoveOnMap?.(event.coordinates, true);
             this._inputEl.blur();
             this._search({text: event.coordinates.toString()}, event.coordinates);

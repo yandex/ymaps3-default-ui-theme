@@ -1,9 +1,10 @@
 {
     "extends": "@yandex/ymaps3-cli",
     "compilerOptions": {
-        "moduleResolution": "Node16",
+        "target": "ES2017",
+        "module": "ES2022",
+        "moduleResolution": "Node",
         "lib": ["dom", "dom.iterable", "esnext"],
-        "moduleResolution": "Node16",
         "typeRoots": ["./node_modules/@types", "./node_modules/@yandex", "./types"]
     },
     "include": ["./src", "./node_modules/@yandex/ymaps3-cli/index.d.ts"]

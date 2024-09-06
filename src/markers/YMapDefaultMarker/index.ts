@@ -1,6 +1,6 @@
 import {LngLat, YMapMarker, YMapMarkerProps} from '@yandex/ymaps3-types';
 import {IconColor, IconName, iconColors, icons} from '../../icons';
-import {YMapPopupMarkerProps, YMapPopupMarker} from '../YMapPopupMarker';
+import {YMapPopupMarker, YMapPopupMarkerProps} from '../YMapPopupMarker';
 import {YMapDefaultMarkerReactifyOverride} from './react';
 import {YMapDefaultMarkerVuefyOptions, YMapDefaultMarkerVuefyOverride} from './vue';
 
@@ -244,12 +244,12 @@ export class YMapDefaultMarker extends ymaps3.YMapComplexEntity<YMapDefaultMarke
         return hintContainer;
     }
 
-    private _onMarkerClick = (event: MouseEvent) => {
+    private _onMarkerClick: YMapDefaultMarkerProps['onClick'] = (...args) => {
         if (!this._popup) {
             return;
         }
         this._popup.update({show: !this._popup.isOpen});
-        this._props.onClick?.(event);
+        this._props.onClick?.(...args);
     };
 
     private _updateTheme() {

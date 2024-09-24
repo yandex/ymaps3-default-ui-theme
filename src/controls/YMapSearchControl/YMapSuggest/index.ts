@@ -92,7 +92,7 @@ class YMapSuggest extends ymaps3.YMapComplexEntity<YMapSuggestProps> {
 
     private _addSuggestItems(suggest: SuggestResponse, onSuggestClick: YMapSuggestProps['onSuggestClick']) {
         suggest.forEach((suggestItem) => {
-            const searchParams = {uri: suggestItem.uri, text: suggestItem.title.text};
+            const searchParams = {uri: suggestItem.uri, text: suggestItem.value};
 
             this.addChild(
                 new YMapSuggestItem({

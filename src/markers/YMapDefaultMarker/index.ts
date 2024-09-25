@@ -140,7 +140,8 @@ export class YMapDefaultMarker extends ymaps3.YMapComplexEntity<YMapDefaultMarke
         this._marker = new ymaps3.YMapMarker(
             {
                 ...this._props,
-                onClick: this._onMarkerClick
+                onClick: this._onMarkerClick,
+                onDragMove: this._onMarkerDragMove
             },
             this._markerElement
         );
@@ -218,6 +219,7 @@ export class YMapDefaultMarker extends ymaps3.YMapComplexEntity<YMapDefaultMarke
         return new YMapPopupMarker({
             ...this._props,
             ...this._props.popup,
+            draggable: false,
             show: this._props.popup.show ?? false,
             offset: this._props.popup.offset ?? this._getPopupOffset(),
             zIndex: 1000
@@ -245,11 +247,17 @@ export class YMapDefaultMarker extends ymaps3.YMapComplexEntity<YMapDefaultMarke
     }
 
     private _onMarkerClick: YMapDefaultMarkerProps['onClick'] = (...args) => {
-        if (!this._popup) {
-            return;
+        if (this._popup) {
+            this._popup.update({show: this._popup.isOpen});
         }
-        this._popup.update({show: !this._popup.isOpen});
         this._props.onClick?.(...args);
+    };
+
+    private _onMarkerDragMove: YMapDefaultMarkerProps['onDragMove'] = (coordinates) => {
+        if (this._popup) {
+            this._popup.update({coordinates});
+        }
+        this._props.onDragMove?.(coordinates);
     };
 
     private _updateTheme() {

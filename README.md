@@ -16,16 +16,20 @@ The package is located in the `dist` folder:
 - `dist/esm` es6 modules for direct connection in your project
 - `dist/index.js` Yandex JS Module
 
-Recommended use `@yandex/ymaps3-default-ui-theme` as usual npm package:
+Recommended use `@yandex/ymaps3-default-ui-theme` as usual npm package.
+
+### Usage with npm
+
+Install `@yandex/ymaps3-default-ui-theme` package from npm:
 
 ```sh
 npm install @yandex/ymaps3-default-ui-theme
 ```
 
-and dynamic import
+The JS API is loaded dynamically, so the package must be used after the main JS API has loaded:
 
 ```js
-await ymaps3.ready;
+await ymaps3.ready; // waiting for the main JS API to load.
 
 // ...
 
@@ -34,6 +38,13 @@ const {YMapDefaultMarker} = await import('@yandex/ymaps3-default-ui-theme');
 // ...
 
 map.addChild(new YMapDefaultMarker(props));
+```
+
+You also need to import css styles into your project:
+
+```css
+/* index.css */
+@import '@yandex/ymaps3-default-ui-theme/dist/esm/index.css';
 ```
 
 ### Usage without npm

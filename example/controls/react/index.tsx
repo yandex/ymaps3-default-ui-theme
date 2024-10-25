@@ -29,7 +29,7 @@ async function main() {
                 <YMapDefaultFeaturesLayer />
                 <YMapControls position="left">
                     <YMapZoomControl />
-                    <YMapGeolocationControl />
+                    <YMapGeolocationControl zoom={11} />
                 </YMapControls>
                 <YMapControls position="bottom">
                     <YMapZoomControl />

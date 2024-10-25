@@ -15,7 +15,9 @@ async function main() {
         [new YMapDefaultSchemeLayer({}), new YMapDefaultFeaturesLayer({})]
     );
 
-    map.addChild(new YMapControls({position: 'left'}, [new YMapZoomControl({}), new YMapGeolocationControl({})]));
+    map.addChild(
+        new YMapControls({position: 'left'}, [new YMapZoomControl({}), new YMapGeolocationControl({zoom: 11})])
+    );
     map.addChild(new YMapControls({position: 'bottom'}, [new YMapZoomControl({})]));
     map.addChild(
         new YMapControls({position: 'right'}, [

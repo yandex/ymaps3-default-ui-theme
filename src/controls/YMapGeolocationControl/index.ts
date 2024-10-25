@@ -17,6 +17,8 @@ type YMapGeolocationControlProps = {
     easing?: EasingFunctionDescription;
     /** Map location animate duration */
     duration?: number;
+    /** Map zoom after geolocate position */
+    zoom?: number;
 };
 
 const defaultProps = Object.freeze({duration: 500});
@@ -28,7 +30,8 @@ const YMapGeolocationControlVuefyOptions: CustomVuefyOptions<YMapGeolocationCont
         onGeolocatePosition: Function as TVue.PropType<YMapGeolocationControlProps['onGeolocatePosition']>,
         source: String,
         easing: [String, Object, Function] as TVue.PropType<EasingFunctionDescription>,
-        duration: {type: Number, default: defaultProps.duration}
+        duration: {type: Number, default: defaultProps.duration},
+        zoom: {type: Number}
     }
 };
 
@@ -88,6 +91,7 @@ class YMapGeolocationControl extends ymaps3.YMapGroupEntity<YMapGeolocationContr
         map?.update({
             location: {
                 center: this._position,
+                zoom: this._props.zoom,
                 duration: this._props.duration,
                 easing: this._props.easing
             }

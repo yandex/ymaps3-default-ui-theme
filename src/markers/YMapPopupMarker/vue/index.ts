@@ -2,17 +2,18 @@ import {YMapFeatureProps, YMapMarkerEventHandler} from '@yandex/ymaps3-types';
 import {CustomVuefyFn, CustomVuefyOptions} from '@yandex/ymaps3-types/modules/vuefy';
 import type TVue from '@vue/runtime-core';
 import {YMapPopupContentProps, YMapPopupMarker, YMapPopupMarkerProps, YMapPopupPositionProps} from '../';
+import {defaultProps} from '../props';
 
 export const YMapPopupMarkerVuefyOptions: CustomVuefyOptions<YMapPopupMarker> = {
     props: {
         coordinates: {type: Object, required: true},
         source: String,
-        zIndex: {type: Number, default: 0},
+        zIndex: {type: Number, default: undefined},
         properties: Object,
         id: String,
         disableRoundCoordinates: {type: Boolean, default: undefined},
-        hideOutsideViewport: {type: [Object, Boolean], default: false},
-        draggable: {type: Boolean, default: false},
+        hideOutsideViewport: {type: [Object, Boolean], default: undefined},
+        draggable: {type: Boolean, default: undefined},
         mapFollowsOnDrag: {type: [Boolean, Object]},
         onDragStart: Function as TVue.PropType<YMapMarkerEventHandler>,
         onDragEnd: Function as TVue.PropType<YMapMarkerEventHandler>,
@@ -23,9 +24,9 @@ export const YMapPopupMarkerVuefyOptions: CustomVuefyOptions<YMapPopupMarker> = 
         onClick: Function as TVue.PropType<YMapFeatureProps['onClick']>,
         onFastClick: Function as TVue.PropType<YMapFeatureProps['onFastClick']>,
         content: {type: [Function, String] as TVue.PropType<YMapPopupContentProps>, required: true},
-        position: {type: String as TVue.PropType<YMapPopupPositionProps>},
-        offset: {type: Number, default: 0},
-        show: {type: Boolean, default: true},
+        position: {type: String as TVue.PropType<YMapPopupPositionProps>, default: defaultProps.position},
+        offset: {type: Number, default: defaultProps.offset},
+        show: {type: Boolean, default: defaultProps.show},
         onClose: {type: Function as TVue.PropType<YMapPopupMarkerProps['onClose']>},
         onOpen: {type: Function as TVue.PropType<YMapPopupMarkerProps['onOpen']>}
     }

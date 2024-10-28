@@ -1,8 +1,10 @@
 import type {DomDetach} from '@yandex/ymaps3-types/imperative/DomContext';
-import type {YMapControl} from '@yandex/ymaps3-types/imperative/YMapControl';
 import type {YMap} from '@yandex/ymaps3-types/imperative/YMap';
+import type {YMapControl} from '@yandex/ymaps3-types/imperative/YMapControl';
 import type {SearchResponse} from '@yandex/ymaps3-types/imperative/search';
 import type {SuggestResponse} from '@yandex/ymaps3-types/imperative/suggest';
+import {CustomVuefyOptions} from '@yandex/ymaps3-types/modules/vuefy';
+import type TVue from '@vue/runtime-core';
 import {debounce} from 'lodash';
 import {YMapSuggest} from './YMapSuggest';
 
@@ -29,19 +31,33 @@ export type CustomSearch = {
     map: YMap;
 };
 
+export type SearchCallback = (params: CustomSearch) => Promise<SearchResponse> | SearchResponse;
+export type SuggestCallback = (params: CustomSuggest) => Promise<SuggestResponse> | SuggestResponse;
+export type SearchResultCallback = (result: SearchResponse) => void;
+
 type YMapSearchControlProps = {
     placeholder?: string;
-    search?: ({params, map}: CustomSearch) => Promise<SearchResponse> | SearchResponse;
-    suggest?: ({text, map}: CustomSuggest) => Promise<SuggestResponse> | SuggestResponse;
-    searchResult: (result: SearchResponse) => void;
+    search?: SearchCallback;
+    suggest?: SuggestCallback;
+    searchResult: SearchResultCallback;
 };
 
 const defaultProps = Object.freeze({
     placeholder: 'Введите адрес'
 });
 
+const YMapSearchControlVuefyOptions: CustomVuefyOptions<YMapSearchControl> = {
+    props: {
+        placeholder: {type: String, default: defaultProps.placeholder},
+        search: {type: Function as TVue.PropType<SearchCallback>},
+        suggest: {type: Function as TVue.PropType<SuggestCallback>},
+        searchResult: {type: Function as TVue.PropType<SearchResultCallback>}
+    }
+};
+
 class YMapSearchCommonControl extends ymaps3.YMapComplexEntity<YMapSearchControlProps, typeof defaultProps> {
     static defaultProps = defaultProps;
+    static [ymaps3.optionsKeyVuefy] = YMapSearchControlVuefyOptions;
 
     private _detachDom?: DomDetach;
     private _rootElement?: HTMLElement;

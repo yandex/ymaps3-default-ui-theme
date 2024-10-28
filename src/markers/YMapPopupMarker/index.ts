@@ -1,4 +1,5 @@
 import {LngLat, YMapMarker, YMapMarkerProps} from '@yandex/ymaps3-types';
+import {DefaultProps, defaultProps} from './props';
 import {YMapPopupMarkerReactifyOverride} from './react';
 import {YMapPopupMarkerVuefyOptions, YMapPopupMarkerVuefyOverride} from './vue';
 
@@ -29,9 +30,6 @@ export type YMapPopupMarkerProps = YMapMarkerProps & {
     /** Popup opening callback */
     onOpen?: () => void;
 };
-
-const defaultProps = Object.freeze({position: 'top', offset: 0, show: true});
-type DefaultProps = typeof defaultProps;
 
 /**
  * `YMapPopupMarker` is a popup with customized content.

@@ -1,7 +1,8 @@
 import type {EasingFunctionDescription, YMapControl, YMapListener} from '@yandex/ymaps3-types';
 import {YMapCameraRequest} from '@yandex/ymaps3-types/imperative/YMap';
+import type {CustomVuefyOptions} from '@yandex/ymaps3-types/modules/vuefy';
+import type TVue from '@vue/runtime-core';
 import {CLICK_TOLERANCE_PX, Position, radToDeg, toggleTilt} from '../utils/angle-utils';
-import {YMapTiltControlVuefyOptions} from './vue';
 
 import './index.css';
 
@@ -16,6 +17,13 @@ export type YMapTiltControlProps = {
 };
 const defaultProps = Object.freeze({duration: 200});
 type DefaultProps = typeof defaultProps;
+
+export const YMapTiltControlVuefyOptions: CustomVuefyOptions<YMapTiltControl> = {
+    props: {
+        easing: [Function, String, Object] as TVue.PropType<EasingFunctionDescription>,
+        duration: {type: Number, default: defaultProps.duration}
+    }
+};
 
 /**
  * Display tilt control on a map.

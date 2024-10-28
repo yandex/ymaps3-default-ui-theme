@@ -64,13 +64,16 @@ type DefaultProps = typeof defaultProps;
 
 const YMapRouteControlVuefyOptions: CustomVuefyOptions<YMapRouteControl> = {
     props: {
-        geolocationTextInput: String,
-        clearFieldsText: String,
-        changeOrderText: String,
-        availableTypes: Array as TVue.PropType<AvailableTypes[]>,
+        geolocationTextInput: {type: String, default: defaultProps.geolocationTextInput},
+        clearFieldsText: {type: String, default: defaultProps.clearFieldsText},
+        changeOrderText: {type: String, default: defaultProps.changeOrderText},
+        availableTypes: {type: Array as TVue.PropType<AvailableTypes[]>, default: defaultProps.availableTypes},
         truckParameters: Object as TVue.PropType<TruckParameters>,
         waypoints: Array as unknown as TVue.PropType<[LngLat | null, LngLat | null]>,
-        waypointsPlaceholders: Array as unknown as TVue.PropType<[string, string]>,
+        waypointsPlaceholders: {
+            type: Array as unknown as TVue.PropType<[string, string]>,
+            default: defaultProps.waypointsPlaceholders
+        },
         search: Function as TVue.PropType<YMapRouteControlProps['search']>,
         suggest: Function as TVue.PropType<YMapRouteControlProps['suggest']>,
         route: Function as TVue.PropType<YMapRouteControlProps['route']>,

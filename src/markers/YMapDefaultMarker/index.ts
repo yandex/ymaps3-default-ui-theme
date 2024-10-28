@@ -10,6 +10,7 @@ import normalPinStrokeSVG from './backgrounds/normal-pin-stroke.svg';
 import normalPinSVG from './backgrounds/normal-pin.svg';
 import smallPoiStrokeSVG from './backgrounds/small-poi-stroke.svg';
 import smallPoiSVG from './backgrounds/small-poi.svg';
+import {DefaultProps, defaultProps} from './props';
 
 import './index.css';
 
@@ -63,9 +64,6 @@ export type YMapDefaultMarkerProps = YMapMarkerProps & {
     staticHint?: boolean;
     popup?: MarkerPopupProps;
 };
-
-const defaultProps = Object.freeze({color: 'red', size: 'small', staticHint: true});
-type DefaultProps = typeof defaultProps;
 
 type BackgroundAndIcon = {background: HTMLElement; stroke: HTMLElement; icon: HTMLElement};
 

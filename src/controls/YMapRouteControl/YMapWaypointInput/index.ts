@@ -76,8 +76,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
             setSearchInputValue: (text) => {
                 this._inputEl.value = text;
             },
-            onSuggestClick: (params: SearchParams) => {
-                this._inputEl.value = params.text;
+            onSuggestClick: () => {
                 this._submitWaypointInput();
             }
         });
@@ -239,6 +238,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
             return;
         }
         const {uri, text} = this._suggestComponent.activeSuggest.dataset;
+        this._inputEl.value = text;
         this._search({uri, text});
         this._removeDirectChild(this._suggestComponent);
         this._inputEl.blur();

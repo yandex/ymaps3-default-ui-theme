@@ -32,6 +32,7 @@ export type SelectWaypointArgs = {
 export type YMapWaypointInputProps = {
     type: 'from' | 'to';
     inputPlaceholder: string;
+    value?: string;
     waypoint?: LngLat | null;
     geolocationTextInput?: string;
     search?: ({params, map}: CustomSearch) => Promise<SearchResponse> | SearchResponse;
@@ -66,6 +67,10 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
 
     public triggerFocus(): void {
         this._inputEl.focus();
+    }
+
+    public getValue(): string {
+        return this._inputEl.value;
     }
 
     constructor(props: YMapWaypointInputProps) {
@@ -161,7 +166,14 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
     }
 
     protected _onUpdate(diffProps: Partial<YMapWaypointInputProps>): void {
-        if (this._props.waypoint !== undefined) {
+        if (this._props.value !== undefined) {
+            if (this._props.value === null) {
+                this._props.value = undefined;
+                this._resetInput();
+            } else {
+                this._search({text: this._props.value}, undefined, this._props.value);
+            }
+        } else if (this._props.waypoint !== undefined) {
             if (this._props.waypoint === null) {
                 this._props.waypoint = undefined;
                 this._resetInput();
@@ -270,7 +282,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
         this._props.onSelectWaypoint({feature});
     };
 
-    private async _search(params: SearchParams, reverseGeocodingCoordinate?: LngLat) {
+    private async _search(params: SearchParams, reverseGeocodingCoordinate?: LngLat, oldValue?: string) {
         try {
             const searchResult =
                 (await this._props.search?.({params, map: this.root})) ?? (await ymaps3.search(params));
@@ -283,6 +295,9 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
             if (reverseGeocodingCoordinate) {
                 this._inputEl.value = feature.properties.name;
                 feature.geometry.coordinates = reverseGeocodingCoordinate;
+            }
+            if (oldValue) {
+                this._inputEl.value = oldValue;
             }
             this._updateIndicatorStatus('setted');
             this._props.onSelectWaypoint({feature});

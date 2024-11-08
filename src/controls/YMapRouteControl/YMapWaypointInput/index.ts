@@ -166,19 +166,12 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
     }
 
     protected _onUpdate(diffProps: Partial<YMapWaypointInputProps>): void {
-        if (this._props.value !== undefined) {
-            if (this._props.value === null) {
-                this._props.value = undefined;
-                this._resetInput();
-            } else {
-                this._search({text: this._props.value}, undefined, this._props.value);
-            }
-        } else if (this._props.waypoint !== undefined) {
+        if (this._props.waypoint !== undefined) {
             if (this._props.waypoint === null) {
                 this._props.waypoint = undefined;
                 this._resetInput();
             } else {
-                this._search({text: this._props.waypoint.toString()}, this._props.waypoint);
+                this._search({text: this._props.waypoint.toString()}, this._props.waypoint, this._props.value);
             }
         }
 
@@ -282,7 +275,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
         this._props.onSelectWaypoint({feature});
     };
 
-    private async _search(params: SearchParams, reverseGeocodingCoordinate?: LngLat, oldValue?: string) {
+    private async _search(params: SearchParams, reverseGeocodingCoordinate?: LngLat, valueOverride?: string) {
         try {
             const searchResult =
                 (await this._props.search?.({params, map: this.root})) ?? (await ymaps3.search(params));
@@ -293,11 +286,8 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
 
             const feature = searchResult[0];
             if (reverseGeocodingCoordinate) {
-                this._inputEl.value = feature.properties.name;
+                this._inputEl.value = valueOverride ? valueOverride : feature.properties.name;
                 feature.geometry.coordinates = reverseGeocodingCoordinate;
-            }
-            if (oldValue) {
-                this._inputEl.value = oldValue;
             }
             this._updateIndicatorStatus('setted');
             this._props.onSelectWaypoint({feature});

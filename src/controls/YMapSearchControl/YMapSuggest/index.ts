@@ -42,7 +42,6 @@ class YMapSuggest extends ymaps3.YMapComplexEntity<YMapSuggestProps> {
 
         if (props.suggestNavigationAction !== undefined) {
             this._updateActiveSuggest(props.suggestNavigationAction);
-            this._props.suggestNavigationAction = undefined
         }
     }
 

@@ -216,6 +216,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
 
     private _onFocusInput = (_event: FocusEvent) => {
         this._isInputFocused = true;
+        this._suggestComponent.update({suggestNavigationAction: undefined});
         this._addDirectChild(this._suggestComponent);
         this._updateIndicatorStatus('focus');
     };

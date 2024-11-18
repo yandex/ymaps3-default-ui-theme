@@ -36,7 +36,8 @@
     .ymaps3--route-control_waypoint-input__field {
         box-sizing: border-box;
         height: 40px;
-        padding: 12px;
+        padding: 12px 30px 12px 12px;
+        text-overflow: ellipsis;
         border: none;
         border-radius: 8px;
         background: #f6f6f6;

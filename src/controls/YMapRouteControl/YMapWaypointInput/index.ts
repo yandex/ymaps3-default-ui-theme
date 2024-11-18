@@ -32,6 +32,7 @@ export type SelectWaypointArgs = {
 export type YMapWaypointInputProps = {
     type: 'from' | 'to';
     inputPlaceholder: string;
+    value?: string;
     waypoint?: LngLat | null;
     geolocationTextInput?: string;
     search?: ({params, map}: CustomSearch) => Promise<SearchResponse> | SearchResponse;
@@ -68,6 +69,10 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
         this._inputEl.focus();
     }
 
+    public getValue(): string {
+        return this._inputEl.value;
+    }
+
     constructor(props: YMapWaypointInputProps) {
         super(props, {container: true});
 
@@ -76,8 +81,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
             setSearchInputValue: (text) => {
                 this._inputEl.value = text;
             },
-            onSuggestClick: (params: SearchParams) => {
-                this._inputEl.value = params.text;
+            onSuggestClick: () => {
                 this._submitWaypointInput();
             }
         });
@@ -167,7 +171,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
                 this._props.waypoint = undefined;
                 this._resetInput();
             } else {
-                this._search({text: this._props.waypoint.toString()}, this._props.waypoint);
+                this._search({text: this._props.waypoint.toString()}, this._props.waypoint, this._props.value);
             }
         }
 
@@ -212,6 +216,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
 
     private _onFocusInput = (_event: FocusEvent) => {
         this._isInputFocused = true;
+        this._suggestComponent.update({suggestNavigationAction: undefined});
         this._addDirectChild(this._suggestComponent);
         this._updateIndicatorStatus('focus');
     };
@@ -239,6 +244,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
             return;
         }
         const {uri, text} = this._suggestComponent.activeSuggest.dataset;
+        this._inputEl.value = text;
         this._search({uri, text});
         this._removeDirectChild(this._suggestComponent);
         this._inputEl.blur();
@@ -270,7 +276,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
         this._props.onSelectWaypoint({feature});
     };
 
-    private async _search(params: SearchParams, reverseGeocodingCoordinate?: LngLat) {
+    private async _search(params: SearchParams, reverseGeocodingCoordinate?: LngLat, valueOverride?: string) {
         try {
             const searchResult =
                 (await this._props.search?.({params, map: this.root})) ?? (await ymaps3.search(params));
@@ -281,7 +287,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
 
             const feature = searchResult[0];
             if (reverseGeocodingCoordinate) {
-                this._inputEl.value = feature.properties.name;
+                this._inputEl.value = valueOverride ? valueOverride : feature.properties.name;
                 feature.geometry.coordinates = reverseGeocodingCoordinate;
             }
             this._updateIndicatorStatus('setted');

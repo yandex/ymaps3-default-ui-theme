@@ -278,8 +278,16 @@ class YMapCommonRouteControl extends ymaps3.YMapComplexEntity<YMapRouteControlPr
 
     private _changeOrder = () => {
         const [fromOld, toOld] = this._waypoints;
-        this._waypointInputToElement.update({waypoint: fromOld === null ? null : fromOld.geometry.coordinates});
-        this._waypointInputFromElement.update({waypoint: toOld === null ? null : toOld.geometry.coordinates});
+        const fromValue = this._waypointInputFromElement.getValue();
+        const toValue = this._waypointInputToElement.getValue();
+        this._waypointInputToElement.update({
+            waypoint: fromOld === null ? null : fromOld.geometry.coordinates,
+            value: !fromValue ? null : fromValue
+        });
+        this._waypointInputFromElement.update({
+            waypoint: toOld === null ? null : toOld.geometry.coordinates,
+            value: !toValue ? null : toValue
+        });
     };
 
     private _onUpdateWaypoints(feature: Feature | null, index: number) {

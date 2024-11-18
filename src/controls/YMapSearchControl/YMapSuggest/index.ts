@@ -54,6 +54,7 @@ class YMapSuggest extends ymaps3.YMapComplexEntity<YMapSuggestProps> {
 
         this._addSuggestItems(suggestResult, this._props.onSuggestClick);
 
+        this._getSuggestElements().at(0)?.classList.add(ACTIVE_CLASS);
         this._rootElement?.classList.toggle(HIDE_CLASS, !this.children.length);
     };
 

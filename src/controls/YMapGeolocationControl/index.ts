@@ -9,8 +9,10 @@ import './index.css';
  * YMapGeolocationControl props
  */
 type YMapGeolocationControlProps = {
-    /** Geolocation request callback */
+    /** Geolocation request success callback */
     onGeolocatePosition?: (position: LngLat) => void;
+    /** Geolocation request error callback */
+    onGeolocateError?: () => void;
     /** Data source id for geolocation placemark */
     source?: string;
     /** Easing function for map location animation */
@@ -19,19 +21,30 @@ type YMapGeolocationControlProps = {
     duration?: number;
     /** Map zoom after geolocate position */
     zoom?: number;
+    /** Options for {@link ymaps3.geolocation.getPosition} */
+    positionOptions?: PositionOptions;
 };
 
-const defaultProps = Object.freeze({duration: 500});
+const defaultProps = Object.freeze({
+    duration: 500,
+    positionOptions: {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 60000
+    }
+});
 
 type DefaultProps = typeof defaultProps;
 
 const YMapGeolocationControlVuefyOptions: CustomVuefyOptions<YMapGeolocationControl> = {
     props: {
         onGeolocatePosition: Function as TVue.PropType<YMapGeolocationControlProps['onGeolocatePosition']>,
+        onGeolocateError: Function as TVue.PropType<YMapGeolocationControlProps['onGeolocateError']>,
         source: String,
         easing: [String, Object, Function] as TVue.PropType<EasingFunctionDescription>,
         duration: {type: Number, default: defaultProps.duration},
-        zoom: {type: Number}
+        zoom: {type: Number},
+        positionOptions: {type: Object, default: defaultProps.positionOptions}
     }
 };
 
@@ -83,9 +96,7 @@ class YMapGeolocationControl extends ymaps3.YMapGroupEntity<YMapGeolocationContr
     private _updatePosition(pos: LngLat): void {
         this._position = pos;
 
-        if (this._props.onGeolocatePosition) {
-            this._props.onGeolocatePosition(this._position);
-        }
+        this._props.onGeolocatePosition?.(this._position);
 
         const map = this.root;
         map?.update({
@@ -106,10 +117,15 @@ class YMapGeolocationControl extends ymaps3.YMapGroupEntity<YMapGeolocationContr
         this._setLoading(true);
 
         ymaps3.geolocation
-            .getPosition({enableHighAccuracy: true, maximumAge: 60000})
+            .getPosition(this._props.positionOptions)
             .then((position: {coords: LngLat; accuracy: number}) => {
-                this._setLoading(false);
                 this._updatePosition(position.coords);
+            })
+            .catch(() => {
+                this._props.onGeolocateError?.();
+            })
+            .finally(() => {
+                this._setLoading(false);
             });
     }
 

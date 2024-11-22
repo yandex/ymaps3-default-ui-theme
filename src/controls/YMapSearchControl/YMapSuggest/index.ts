@@ -46,11 +46,11 @@ class YMapSuggest extends ymaps3.YMapComplexEntity<YMapSuggestProps> {
     }
 
     private _updateSuggestList = async (searchInputValue: YMapSuggestProps['searchInputValue']) => {
+        this._removeSuggestItems();
+
         const suggestResult =
             (await this._props.suggest?.({text: searchInputValue, map: this.root})) ??
             (await ymaps3.suggest({text: searchInputValue}));
-
-        this._removeSuggestItems();
 
         this._addSuggestItems(suggestResult, this._props.onSuggestClick);
 

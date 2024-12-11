@@ -56,10 +56,7 @@ Just use `ymaps3.registerCdn` and `ymaps3.import`:
 
 ```js
 // register in `ymaps3.import` which CDN to take the package from
-ymaps3.import.registerCdn(
-  'https://cdn.jsdelivr.net/npm/{package}',
-  '@yandex/ymaps3-default-ui-theme@latest'
-);
+ymaps3.import.registerCdn('https://cdn.jsdelivr.net/npm/{package}', '@yandex/ymaps3-default-ui-theme@latest');
 
 // ...
 
@@ -107,10 +104,12 @@ The parameters for the `YMapGeolocationControl` are slightly different:
 
 #### Rich controls
 
-More comprehensive controls include the following classes::
+More comprehensive controls include the following classes:
 
-- `YMapSearchControl` – adds a control to the map in the form of a search bar.
-  It also has built-in suggest hints when entering the name of a place or organization.
+##### YMapSearchControl
+
+`YMapSearchControl` – adds a control to the map in the form of a search bar.
+It also has built-in suggest hints when entering the name of a place or organization.
 
 `YMapSearchControl` has the following parameters:
 
@@ -122,6 +121,32 @@ More comprehensive controls include the following classes::
 
 `YMapSearchControl` does not display markers on the map, it only returns coordinates and location parameters,
 the developer is responsible for displaying them on the map.
+
+##### YMapRouteControl
+
+`YMapRouteControl` – adds a control to the map in the form of a route panel.
+There are also built-in suggest hint when entering the name of a place, panel control buttons
+and the ability to specify a waypoint with a click on the map.
+
+`YMapRouteControl` has the following parameters:
+
+| Props name            | Description                                                                                                                      |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| geolocationTextInput  | Text that will be displayed in the input field when the user's geolocation is selected.                                          |
+| clearFieldsText       | Text of the route reset button.                                                                                                  |
+| changeOrderText       | The text of the route change order button.                                                                                       |
+| availableTypes        | Array of available route types in the routing panel (`driving`, `transit`, `truck`, `walking`).                                  |
+| truckParameters       | A parameter object for a truck (only for `type=truck`).                                                                          |
+| waypoints             | Array with coordinates of waypoints (`[LngLat, LngLat]`).                                                                        |
+| waypointsPlaceholders | Array with placeholders for waypoint inputs (`[string, string]`).                                                                |
+| autofocus             | Flag that the first waypoint input should be in focus when opening.                                                              |
+| search                | Function that overrides the search function. By default, `ymaps3.search` is used.                                                |
+| suggest               | Function that overrides the suggest function. By default, `ymaps3.suggest` is used.                                              |
+| route                 | Function that overrides the route function. By default, `ymaps3.route` is used.                                                  |
+| onMouseMoveOnMap      | Callback that is called when the user selects a waypoint on the map. It can be used to display a marker under the user's cursor. |
+| onUpdateWaypoints     | Callback that is called when the user has changed the waypoints.                                                                 |
+| onRouteResult         | Callback that receives a route between waypoints.                                                                                |
+| onBuildRouteError     | Callback that is called if the route could not be set (route was not found or server error).                                     |
 
 ### Markers and popups
 

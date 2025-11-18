@@ -29,6 +29,8 @@ export const YMapDefaultMarkerVuefyOptions: CustomVuefyOptions<
         onDoubleClick: Function as TVue.PropType<YMapFeatureProps['onDoubleClick']>,
         onClick: Function as TVue.PropType<YMapFeatureProps['onClick']>,
         onFastClick: Function as TVue.PropType<YMapFeatureProps['onFastClick']>,
+        onMouseEnter: Function as TVue.PropType<YMapFeatureProps['onMouseEnter']>,
+        onMouseLeave: Function as TVue.PropType<YMapFeatureProps['onMouseLeave']>,
         iconName: {type: String as TVue.PropType<IconName>},
         color: {type: [Object, String] as TVue.PropType<MarkerColorProps>, default: defaultProps.color},
         size: {type: String as TVue.PropType<MarkerSizeProps>, default: defaultProps.size},

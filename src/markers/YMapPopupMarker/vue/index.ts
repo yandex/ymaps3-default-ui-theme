@@ -23,6 +23,8 @@ export const YMapPopupMarkerVuefyOptions: CustomVuefyOptions<YMapPopupMarker> = 
         onDoubleClick: Function as TVue.PropType<YMapFeatureProps['onDoubleClick']>,
         onClick: Function as TVue.PropType<YMapFeatureProps['onClick']>,
         onFastClick: Function as TVue.PropType<YMapFeatureProps['onFastClick']>,
+        onMouseEnter: Function as TVue.PropType<YMapFeatureProps['onMouseEnter']>,
+        onMouseLeave: Function as TVue.PropType<YMapFeatureProps['onMouseLeave']>,
         content: {type: [Function, String] as TVue.PropType<YMapPopupContentProps>, required: true},
         position: {type: String as TVue.PropType<YMapPopupPositionProps>, default: defaultProps.position},
         offset: {type: Number, default: defaultProps.offset},

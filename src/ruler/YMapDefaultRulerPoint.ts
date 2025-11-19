@@ -12,6 +12,7 @@ const HIDDEN_CLASS_NAME = 'ymaps3--default-ruler-point__hidden';
 export type YMapDefaultRulerPointProps = RenderPointArgs & {onDeleteAllPoints: () => void; onFinish: () => void};
 
 export class YMapDefaultRulerPoint extends ymaps3.YMapComplexEntity<YMapDefaultRulerPointProps> {
+    static readonly __implName = 'YMapDefaultRulerPoint';
     private _tooltipMarker: YMapMarker;
     private _pointMarker: YMapMarker;
     private _listener: YMapListener;

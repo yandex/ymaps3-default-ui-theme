@@ -68,6 +68,7 @@ export type YMapDefaultMarkerProps = YMapMarkerProps & {
 type BackgroundAndIcon = {background: HTMLElement; stroke: HTMLElement; icon: HTMLElement};
 
 export class YMapDefaultMarker extends ymaps3.YMapComplexEntity<YMapDefaultMarkerProps, DefaultProps> {
+    static readonly __implName = 'YMapDefaultMarker';
     static defaultProps = defaultProps;
     static [ymaps3.overrideKeyReactify] = YMapDefaultMarkerReactifyOverride;
     static [ymaps3.overrideKeyVuefy] = YMapDefaultMarkerVuefyOverride;

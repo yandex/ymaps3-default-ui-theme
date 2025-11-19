@@ -36,6 +36,7 @@ export const YMapRotateTiltControlVuefyOptions: CustomVuefyOptions<YMapRotateTil
  * ```
  */
 export class YMapRotateTiltControl extends ymaps3.YMapComplexEntity<YMapRotateTiltControlProps, DefaultProps> {
+    static readonly __implName = 'YMapRotateTiltControl';
     static defaultProps = defaultProps;
     static [ymaps3.optionsKeyVuefy] = YMapRotateTiltControlVuefyOptions;
 

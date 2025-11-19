@@ -38,6 +38,7 @@ export const YMapTiltControlVuefyOptions: CustomVuefyOptions<YMapTiltControl> = 
  * ```
  */
 export class YMapTiltControl extends ymaps3.YMapComplexEntity<YMapTiltControlProps, DefaultProps> {
+    static readonly __implName = 'YMapTiltControl';
     static defaultProps = defaultProps;
     static [ymaps3.optionsKeyVuefy] = YMapTiltControlVuefyOptions;
     private _control!: YMapControl;
@@ -67,6 +68,7 @@ const TILT_INDICATOR_ACTIVE_CLASS = 'ymaps3--tilt_indicator__active';
 const HIDE_INDICATOR_CLASS = 'hide-indicator';
 
 class InternalTiltControl extends ymaps3.YMapComplexEntity<YMapTiltControlProps> {
+    static readonly __implName = 'InternalTiltControl';
     private _listener!: YMapListener;
 
     private _element?: HTMLElement;

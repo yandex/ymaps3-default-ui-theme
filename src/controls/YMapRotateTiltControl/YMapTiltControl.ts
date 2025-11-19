@@ -9,6 +9,7 @@ const TILT_CONTROL_IN_ACTION_CLASS = 'ymaps3--rotate-tilt_tilt__in-action';
 const TILT_CONTROL_TILTED_CLASS = 'ymaps3--rotate-tilt_tilt__tilted';
 
 export class YMapTiltControl extends ymaps3.YMapComplexEntity<YMapRotateTiltControlProps> {
+    static readonly __implName = 'YMapTiltControl';
     private _element?: HTMLElement;
     private _domDetach?: () => void;
 

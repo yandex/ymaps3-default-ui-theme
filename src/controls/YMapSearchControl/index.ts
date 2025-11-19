@@ -56,6 +56,7 @@ const YMapSearchControlVuefyOptions: CustomVuefyOptions<YMapSearchControl> = {
 };
 
 class YMapSearchCommonControl extends ymaps3.YMapComplexEntity<YMapSearchControlProps, typeof defaultProps> {
+    static readonly __implName = 'YMapSearchCommonControl';
     static defaultProps = defaultProps;
     static [ymaps3.optionsKeyVuefy] = YMapSearchControlVuefyOptions;
 
@@ -271,6 +272,7 @@ class YMapSearchCommonControl extends ymaps3.YMapComplexEntity<YMapSearchControl
 }
 
 class YMapSearchControl extends ymaps3.YMapComplexEntity<YMapSearchControlProps> {
+    static readonly __implName = 'YMapSearchControl';
     private _control!: YMapControl;
     private _search!: YMapSearchCommonControl;
 

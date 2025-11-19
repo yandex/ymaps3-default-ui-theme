@@ -60,6 +60,7 @@ const YMapGeolocationControlVuefyOptions: CustomVuefyOptions<YMapGeolocationCont
  * ```
  */
 class YMapGeolocationControl extends ymaps3.YMapGroupEntity<YMapGeolocationControlProps, DefaultProps> {
+    static readonly __implName = 'YMapGeolocationControl';
     static defaultProps = defaultProps;
     static [ymaps3.optionsKeyVuefy] = YMapGeolocationControlVuefyOptions;
     private _control!: YMapControl;

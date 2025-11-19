@@ -33,6 +33,7 @@ const YMapZoomControlVuefyOptions: CustomVuefyOptions<YMapZoomControl> = {
 };
 
 class YMapZoomCommonControl extends ymaps3.YMapGroupEntity<YMapZoomControlProps> {
+    static readonly __implName = 'YMapZoomCommonControl';
     protected _zoomIn!: YMapControlCommonButton;
     protected _zoomOut!: YMapControlCommonButton;
     protected _listener!: YMapListener;
@@ -174,6 +175,7 @@ class YMapZoomCommonControl extends ymaps3.YMapGroupEntity<YMapZoomControlProps>
  * ```
  */
 class YMapZoomControl extends ymaps3.YMapComplexEntity<YMapZoomControlProps> {
+    static readonly __implName = 'YMapZoomControl';
     static [ymaps3.optionsKeyVuefy] = YMapZoomControlVuefyOptions;
 
     static defaultProps = defaultProps;

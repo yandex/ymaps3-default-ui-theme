@@ -38,6 +38,7 @@ export const YMapRotateControlVuefyOptions: CustomVuefyOptions<YMapRotateControl
  * ```
  */
 export class YMapRotateControl extends ymaps3.YMapComplexEntity<YMapRotateControlProps, DefaultProps> {
+    static readonly __implName = 'YMapRotateControl';
     static defaultProps = defaultProps;
     static [ymaps3.optionsKeyVuefy] = YMapRotateControlVuefyOptions;
     private _control: YMapControl;
@@ -60,6 +61,7 @@ export class YMapRotateControl extends ymaps3.YMapComplexEntity<YMapRotateContro
 const ROTATE_CONTROL_CLASS = 'ymaps3--rotate-control';
 
 export class InternalRotateControl extends ymaps3.YMapComplexEntity<YMapRotateControlProps, DefaultProps> {
+    static readonly __implName = 'InternalRotateControl';
     private _listener!: YMapListener;
 
     private _element?: HTMLElement;

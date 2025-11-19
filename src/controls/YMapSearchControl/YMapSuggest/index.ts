@@ -24,6 +24,7 @@ type YMapSuggestProps = {
 };
 
 class YMapSuggest extends ymaps3.YMapComplexEntity<YMapSuggestProps> {
+    static readonly __implName = 'YMapSuggest';
     private _detachDom?: DomDetach;
     private _rootElement?: HTMLElement;
     private _unwatchThemeContext?: () => void;
@@ -197,6 +198,7 @@ type YMapSuggestItemProps = {
 };
 
 class YMapSuggestItem extends ymaps3.YMapComplexEntity<YMapSuggestItemProps> {
+    static readonly __implName = 'YMapSuggestItem';
     private _detachDom?: DomDetach;
     private _rootElement?: HTMLElement;
     private _unwatchThemeContext?: () => void;

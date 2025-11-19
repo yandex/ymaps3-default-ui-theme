@@ -48,6 +48,7 @@ export type YMapPopupMarkerProps = YMapMarkerProps & {
  * ```
  */
 export class YMapPopupMarker extends ymaps3.YMapComplexEntity<YMapPopupMarkerProps, DefaultProps> {
+    static readonly __implName = 'YMapPopupMarker';
     static defaultProps = defaultProps;
     static [ymaps3.overrideKeyReactify] = YMapPopupMarkerReactifyOverride;
     static [ymaps3.overrideKeyVuefy] = YMapPopupMarkerVuefyOverride;

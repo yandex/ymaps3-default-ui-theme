@@ -9,6 +9,7 @@ const ROTATE_RING_CLASS = 'ymaps3--rotate-tilt_rotate__ring';
 const ROTATE_CONTAINER_CLASS = 'ymaps3--rotate-tilt_rotate__container';
 
 export class YMapRotateControl extends ymaps3.YMapGroupEntity<YMapRotateTiltControlProps> {
+    static readonly __implName = 'YMapRotateControl';
     private _element?: HTMLElement;
     private _containerElement?: HTMLElement;
     private _ringElement?: HTMLElement;

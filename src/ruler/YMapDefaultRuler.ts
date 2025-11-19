@@ -39,6 +39,7 @@ export const YMapDefaultRulerVuefyOptions: CustomVuefyOptions<YMapDefaultRuler> 
 };
 
 export class YMapDefaultRuler extends ymaps3.YMapComplexEntity<YMapDefaultRulerProps> {
+    static readonly __implName = 'YMapDefaultRuler';
     static [ymaps3.optionsKeyVuefy] = YMapDefaultRulerVuefyOptions;
 
     private _ruler!: YMapRuler;

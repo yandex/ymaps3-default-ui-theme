@@ -90,6 +90,7 @@ const YMapRouteControlVuefyOptions: CustomVuefyOptions<YMapRouteControl> = {
 };
 
 export class YMapRouteControl extends ymaps3.YMapComplexEntity<YMapRouteControlProps, DefaultProps> {
+    static readonly __implName = 'YMapRouteControl';
     static defaultProps = defaultProps;
     static [ymaps3.optionsKeyVuefy] = YMapRouteControlVuefyOptions;
 
@@ -119,6 +120,7 @@ export class YMapRouteControl extends ymaps3.YMapComplexEntity<YMapRouteControlP
 }
 
 class YMapCommonRouteControl extends ymaps3.YMapComplexEntity<YMapRouteControlProps> {
+    static readonly __implName = 'YMapCommonRouteControl';
     private _rootElement: HTMLElement;
     private _routeParametersElement: HTMLElement;
     private _routeInfoElement: HTMLElement;

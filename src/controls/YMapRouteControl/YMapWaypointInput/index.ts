@@ -48,6 +48,7 @@ const defaultProps = Object.freeze({geolocationTextInput: 'My location'});
  * @internal
  */
 export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInputProps, typeof defaultProps> {
+    static readonly __implName = 'YMapWaypointInput';
     static defaultProps = defaultProps;
     private _detachDom?: DomDetach;
     private _suggestComponent?: YMapSuggest;
@@ -217,7 +218,7 @@ export class YMapWaypointInput extends ymaps3.YMapComplexEntity<YMapWaypointInpu
     private _onFocusInput = (_event: FocusEvent) => {
         this._isInputFocused = true;
         this._suggestComponent.update({
-            searchInputValue: this.getValue(), 
+            searchInputValue: this.getValue(),
             suggestNavigationAction: undefined
         });
         this._addDirectChild(this._suggestComponent);

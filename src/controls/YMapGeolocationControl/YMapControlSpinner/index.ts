@@ -2,6 +2,7 @@ import type {DomDetach} from '@yandex/ymaps3-types';
 import './index.css';
 
 class YMapControlSpinner extends ymaps3.YMapComplexEntity<{}> {
+    static readonly __implName = 'YMapControlSpinner';
     private _detachDom?: DomDetach;
     private _unwatchThemeContext?: () => void;
 

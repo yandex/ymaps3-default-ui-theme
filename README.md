@@ -194,8 +194,8 @@ These components include the following classes:
 
 `YMapImageOverlay` has the following parameters:
 
-| Props name | Description                                                                                                                                                                               |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| bounds     | Geographic bounds for the image as [LngLatBounds] (https://yandex.ru/maps-api/docs/js-api/ref/index.html#LngLatBounds:~:text=LngLatBounds-,LngLatBounds,-LngLatBounds%3A%20GenericBounds) |
-| image      | URL or path to the image to display                                                                                                                                                       |
-| className  | CSS class name for custom styling (optional)                                                                                                                                              |
+| Props name | Description                                       |
+| ---------- | ------------------------------------------------- |
+| bounds     | Geographic bounds for the image as [LngLatBounds] |
+| imageUrl   | URL or path to the image to display               |
+| className  | CSS class name for custom styling (optional)      |

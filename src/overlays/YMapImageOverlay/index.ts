@@ -2,23 +2,25 @@ import type {YMapFeature, YMapListener, LngLatBounds, YMapFeatureProps} from '@y
 import {leftUpperPointToPointGeometry, boundsToWidthHeight} from './common';
 import './index.css';
 
-export type ImageOverlayProps = {
+const IMAGE_OVERLAY = 'ymaps3--image-overlay';
+
+export type YMapImageOverlayProps = {
     bounds: LngLatBounds;
     imageUrl: string;
     className?: string;
 } & Omit<YMapFeatureProps, 'geometry'>;
 
-export class YMapImageOverlay extends ymaps3.YMapComplexEntity<ImageOverlayProps> {
+export class YMapImageOverlay extends ymaps3.YMapComplexEntity<YMapImageOverlayProps> {
     private _feature: YMapFeature;
     private _element: HTMLElement;
     private _listener: YMapListener;
 
-    constructor(props: ImageOverlayProps) {
+    constructor(props: YMapImageOverlayProps) {
         super(props);
 
         // Create HTML element for the image
         this._element = document.createElement('div');
-        this._element.className = `ymaps3--image-overlay ${props.className ?? ''}`;
+        this._element.className = `${IMAGE_OVERLAY} ${props.className ?? ''}`;
 
         this._feature = new ymaps3.YMapFeature({
             geometry: leftUpperPointToPointGeometry(props.bounds),
@@ -56,7 +58,7 @@ export class YMapImageOverlay extends ymaps3.YMapComplexEntity<ImageOverlayProps
         });
     }
 
-    protected _onUpdate(props: Partial<ImageOverlayProps>): void {
+    protected _onUpdate(props: Partial<YMapImageOverlayProps>): void {
         if (props.bounds) {
             this._feature.update({
                 geometry: leftUpperPointToPointGeometry(props.bounds)
@@ -68,7 +70,7 @@ export class YMapImageOverlay extends ymaps3.YMapComplexEntity<ImageOverlayProps
             this._element.style.backgroundImage = `url(${props.imageUrl})`;
         }
         if (props.className) {
-            this._element.className = `ymaps3--image-overlay ${props.className}`;
+            this._element.className = `${IMAGE_OVERLAY} ${props.className}`;
         }
     }
 }

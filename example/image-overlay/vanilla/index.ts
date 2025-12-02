@@ -25,7 +25,7 @@ async function main() {
 
     const imageOverlay = new YMapImageOverlay({
         bounds: IMAGE_BOUNDS,
-        image: IMAGE_RELATIVE_PATH,
+        imageUrl: IMAGE_RELATIVE_PATH,
         className: 'image-overlay'
     });
 

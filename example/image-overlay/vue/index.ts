@@ -30,7 +30,7 @@ async function main() {
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
 
-                <YMapImageOverlay :bounds="IMAGE_BOUNDS" :image="IMAGE_RELATIVE_PATH" className="image-overlay" />
+                <YMapImageOverlay :bounds="IMAGE_BOUNDS" :imageUrl="IMAGE_RELATIVE_PATH" className="image-overlay" />
             </YMap>`
     });
     app.mount('#app');

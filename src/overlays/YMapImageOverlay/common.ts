@@ -23,8 +23,7 @@ export function leftUpperPointToPointGeometry(bounds: LngLatBounds): PointGeomet
 }
 
 export function boundsToWidthHeight(root: YMap, bounds: LngLatBounds): {width: number; height: number} {
-    const projection = root.projection;
-    const zoom = root.zoom;
+    const {zoom, projection} = root;
 
     const {leftUpperCorner, leftLowerCorner, rightUpperCorner} = boundsToLeftUpperPoint(bounds);
 

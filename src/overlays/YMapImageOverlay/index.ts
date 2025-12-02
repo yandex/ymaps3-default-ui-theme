@@ -4,7 +4,7 @@ import './index.css';
 
 export type ImageOverlayProps = {
     bounds: LngLatBounds;
-    image: string;
+    imageUrl: string;
     className?: string;
 } & Omit<YMapFeatureProps, 'geometry'>;
 
@@ -18,7 +18,7 @@ export class YMapImageOverlay extends ymaps3.YMapComplexEntity<ImageOverlayProps
 
         // Create HTML element for the image
         this._element = document.createElement('div');
-        this._element.className = `element ${props.className ?? ''}`;
+        this._element.className = `ymaps3--image-overlay ${props.className ?? ''}`;
 
         this._feature = new ymaps3.YMapFeature({
             geometry: leftUpperPointToPointGeometry(props.bounds),
@@ -36,14 +36,14 @@ export class YMapImageOverlay extends ymaps3.YMapComplexEntity<ImageOverlayProps
     }
 
     protected _onAttach(): void {
-        const {bounds, image} = this._props;
+        const {bounds, imageUrl} = this._props;
 
         const {width, height} = boundsToWidthHeight(this.root, bounds);
 
         Object.assign(this._element.style, {
             width: `${width}px`,
             height: `${height}px`,
-            backgroundImage: `url(${image})`
+            backgroundImage: `url(${imageUrl})`
         });
     }
 
@@ -64,11 +64,11 @@ export class YMapImageOverlay extends ymaps3.YMapComplexEntity<ImageOverlayProps
             // Recalculate sizes when bounds change
             this._updateSize();
         }
-        if (props.image) {
-            this._element.style.backgroundImage = `url(${props.image})`;
+        if (props.imageUrl) {
+            this._element.style.backgroundImage = `url(${props.imageUrl})`;
         }
         if (props.className) {
-            this._element.className = `element ${props.className}`;
+            this._element.className = `ymaps3--image-overlay ${props.className}`;
         }
     }
 }

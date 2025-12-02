@@ -27,7 +27,7 @@ async function main() {
             <YMap location={location} ref={(x) => (map = x)}>
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
-                <YMapImageOverlay className="image-overlay" image={IMAGE_RELATIVE_PATH} bounds={IMAGE_BOUNDS} />
+                <YMapImageOverlay className="image-overlay" imageUrl={IMAGE_RELATIVE_PATH} bounds={IMAGE_BOUNDS} />
             </YMap>
         );
     }

@@ -182,3 +182,20 @@ For `YMapPopupMarker`:
 | show       | Hide or show popup on map                                                       |
 | onClose    | Popup closing callback                                                          |
 | onOpen     | Popup opening callback                                                          |
+
+### Overlays
+
+Overlays are UI components that display content over specific geographic areas on the map.
+These components include the following classes:
+
+- `YMapImageOverlay` – an image overlay on the map within specified geographic bounds.
+
+#### YMapImageOverlay
+
+`YMapImageOverlay` has the following parameters:
+
+| Props name | Description                                       |
+| ---------- | ------------------------------------------------- |
+| bounds     | Geographic bounds for the image as `LngLatBounds` |
+| imageUrl   | URL or path to the image to display               |
+| className  | CSS class name for custom styling (optional)      |

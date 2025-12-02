@@ -1,4 +1,4 @@
-import {LOCATION, RECTANGLE_COORDINATES, IMAGE_RELATIVE_PATH} from '../variables';
+import {LOCATION, IMAGE_BOUNDS, IMAGE_RELATIVE_PATH} from '../variables';
 
 window.map = null;
 
@@ -27,11 +27,7 @@ async function main() {
             <YMap location={location} ref={(x) => (map = x)}>
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
-                <YMapImageOverlay
-                    className="image-overlay"
-                    image={IMAGE_RELATIVE_PATH}
-                    bounds={RECTANGLE_COORDINATES}
-                />
+                <YMapImageOverlay className="image-overlay" image={IMAGE_RELATIVE_PATH} bounds={IMAGE_BOUNDS} />
             </YMap>
         );
     }

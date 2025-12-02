@@ -1,7 +1,12 @@
-import type {YMapFeature, YMapListener} from '@yandex/ymaps3-types';
-import type {ImageOverlayProps} from './common';
-import {boundsToLeftUpperPoint, boundsToWidthHeight} from './common';
+import type {YMapFeature, YMapListener, LngLatBounds, YMapFeatureProps} from '@yandex/ymaps3-types';
+import {leftUpperPointToPointGeometry, boundsToWidthHeight} from './common';
 import './index.css';
+
+export type ImageOverlayProps = {
+    bounds: LngLatBounds;
+    image: string;
+    className?: string;
+} & Omit<YMapFeatureProps, 'geometry'>;
 
 export class YMapImageOverlay extends ymaps3.YMapComplexEntity<ImageOverlayProps> {
     private _feature: YMapFeature;
@@ -16,7 +21,7 @@ export class YMapImageOverlay extends ymaps3.YMapComplexEntity<ImageOverlayProps
         this._element.className = `element ${props.className ?? ''}`;
 
         this._feature = new ymaps3.YMapFeature({
-            geometry: boundsToLeftUpperPoint(props.bounds),
+            geometry: leftUpperPointToPointGeometry(props.bounds),
             style: {
                 element: this._element
             }
@@ -25,6 +30,9 @@ export class YMapImageOverlay extends ymaps3.YMapComplexEntity<ImageOverlayProps
         this._listener = new ymaps3.YMapListener({
             onUpdate: () => this._updateSize()
         });
+
+        this.addChild(this._feature);
+        this.addChild(this._listener);
     }
 
     protected _onAttach(): void {
@@ -37,22 +45,21 @@ export class YMapImageOverlay extends ymaps3.YMapComplexEntity<ImageOverlayProps
             height: `${height}px`,
             backgroundImage: `url(${image})`
         });
-
-        this.addChild(this._feature);
-        this.addChild(this._listener);
     }
 
     private _updateSize(): void {
         const {bounds} = this._props;
         const {width, height} = boundsToWidthHeight(this.root, bounds);
-        this._element.style.width = `${width}px`;
-        this._element.style.height = `${height}px`;
+        Object.assign(this._element.style, {
+            width: `${width}px`,
+            height: `${height}px`
+        });
     }
 
     protected _onUpdate(props: Partial<ImageOverlayProps>): void {
         if (props.bounds) {
             this._feature.update({
-                geometry: boundsToLeftUpperPoint(props.bounds)
+                geometry: leftUpperPointToPointGeometry(props.bounds)
             });
             // Recalculate sizes when bounds change
             this._updateSize();
@@ -63,10 +70,5 @@ export class YMapImageOverlay extends ymaps3.YMapComplexEntity<ImageOverlayProps
         if (props.className) {
             this._element.className = `element ${props.className}`;
         }
-    }
-
-    protected _onDetach(): void {
-        this.removeChild(this._listener);
-        this.removeChild(this._feature);
     }
 }

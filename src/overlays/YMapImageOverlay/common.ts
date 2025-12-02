@@ -1,15 +1,18 @@
-import type {LngLat, LngLatBounds, PointGeometry, YMap, YMapFeatureProps} from '@yandex/ymaps3-types';
+import type {LngLat, LngLatBounds, PointGeometry, YMap} from '@yandex/ymaps3-types';
 import {worldToPixels} from '@yandex/ymaps3-world-utils';
 
-export type ImageOverlayProps = {
-    bounds: LngLatBounds;
-    image: string;
-    className?: string;
-} & Omit<YMapFeatureProps, 'geometry'>;
-
-export function boundsToLeftUpperPoint(bounds: LngLatBounds): PointGeometry {
+function boundsToLeftUpperPoint(bounds: LngLatBounds): {
+    leftUpperCorner: LngLat;
+    leftLowerCorner: LngLat;
+    rightUpperCorner: LngLat;
+} {
     const [leftLowerCorner, rightUpperCorner] = bounds;
     const leftUpperCorner: LngLat = [leftLowerCorner[0], rightUpperCorner[1]];
+    return {leftUpperCorner, leftLowerCorner, rightUpperCorner};
+}
+
+export function leftUpperPointToPointGeometry(bounds: LngLatBounds): PointGeometry {
+    const {leftUpperCorner} = boundsToLeftUpperPoint(bounds);
 
     const pointGeometry: PointGeometry = {
         type: 'Point',
@@ -23,26 +26,16 @@ export function boundsToWidthHeight(root: YMap, bounds: LngLatBounds): {width: n
     const projection = root.projection;
     const zoom = root.zoom;
 
-    const [leftLowerCorner, rightUpperCorner] = bounds;
-    const leftUpperCorner: LngLat = [leftLowerCorner[0], rightUpperCorner[1]];
+    const {leftUpperCorner, leftLowerCorner, rightUpperCorner} = boundsToLeftUpperPoint(bounds);
 
     const leftUpperCornerWorldCoords = projection.toWorldCoordinates(leftUpperCorner);
-    const leftUpperCornerPixelCoords = worldToPixels(
-        {x: leftUpperCornerWorldCoords.x, y: leftUpperCornerWorldCoords.y},
-        zoom
-    );
+    const leftUpperCornerPixelCoords = worldToPixels(leftUpperCornerWorldCoords, zoom);
 
     const leftLowerCornerWorldCoords = projection.toWorldCoordinates(leftLowerCorner);
-    const leftLowerCornerPixelCoords = worldToPixels(
-        {x: leftLowerCornerWorldCoords.x, y: leftLowerCornerWorldCoords.y},
-        zoom
-    );
+    const leftLowerCornerPixelCoords = worldToPixels(leftLowerCornerWorldCoords, zoom);
 
     const rightUpperCornerWorldCoords = projection.toWorldCoordinates(rightUpperCorner);
-    const rightUpperCornerPixelCoords = worldToPixels(
-        {x: rightUpperCornerWorldCoords.x, y: rightUpperCornerWorldCoords.y},
-        zoom
-    );
+    const rightUpperCornerPixelCoords = worldToPixels(rightUpperCornerWorldCoords, zoom);
 
     const width = rightUpperCornerPixelCoords.x - leftUpperCornerPixelCoords.x;
     const height = leftLowerCornerPixelCoords.y - leftUpperCornerPixelCoords.y;

@@ -31,6 +31,7 @@
     "@typescript-eslint/parser": "6.0.0",
     "@yandex/ymaps3-cli": "^0.0.16",
     "@yandex/ymaps3-types": "^1.0.18033998",
+    "@yandex/ymaps3-world-utils": "^0.0.1",
     "autoprefixer": "^10.4.19",
     "cross-fetch": "4.0.0",
     "css-loader": "6.8.1",
@@ -64,8 +65,5 @@
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "4.15.1"
   },
-  "license": "Apache-2",
-  "dependencies": {
-    "@yandex/ymaps3-world-utils": "^0.0.18176872"
-  }
+  "license": "Apache-2"
 }

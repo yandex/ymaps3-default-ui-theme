@@ -1,4 +1,4 @@
-import {LOCATION, RECTANGLE_COORDINATES, IMAGE_RELATIVE_PATH} from '../variables';
+import {LOCATION, IMAGE_BOUNDS, IMAGE_RELATIVE_PATH} from '../variables';
 window.map = null;
 
 main();
@@ -24,7 +24,7 @@ async function main() {
     );
 
     const imageOverlay = new YMapImageOverlay({
-        bounds: RECTANGLE_COORDINATES,
+        bounds: IMAGE_BOUNDS,
         image: IMAGE_RELATIVE_PATH,
         className: 'image-overlay'
     });

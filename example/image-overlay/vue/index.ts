@@ -1,4 +1,4 @@
-import {LOCATION, RECTANGLE_COORDINATES, IMAGE_RELATIVE_PATH} from '../variables';
+import {LOCATION, IMAGE_BOUNDS, IMAGE_RELATIVE_PATH} from '../variables';
 
 window.map = null;
 
@@ -23,14 +23,14 @@ async function main() {
                 window.map = ref?.entity;
             };
 
-            return {LOCATION, refMap, RECTANGLE_COORDINATES, IMAGE_RELATIVE_PATH};
+            return {LOCATION, refMap, IMAGE_BOUNDS, IMAGE_RELATIVE_PATH};
         },
         template: `
             <YMap :location="LOCATION" :ref="refMap">
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
 
-                <YMapImageOverlay :bounds="RECTANGLE_COORDINATES" :image="IMAGE_RELATIVE_PATH" className="image-overlay" />
+                <YMapImageOverlay :bounds="IMAGE_BOUNDS" :image="IMAGE_RELATIVE_PATH" className="image-overlay" />
             </YMap>`
     });
     app.mount('#app');

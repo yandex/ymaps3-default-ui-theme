@@ -196,6 +196,6 @@ These components include the following classes:
 
 | Props name | Description                                       |
 | ---------- | ------------------------------------------------- |
-| bounds     | Geographic bounds for the image as [LngLatBounds] |
+| bounds     | Geographic bounds for the image as `LngLatBounds` |
 | imageUrl   | URL or path to the image to display               |
 | className  | CSS class name for custom styling (optional)      |

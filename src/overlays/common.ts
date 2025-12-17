@@ -1,7 +1,7 @@
 import type {LngLat, LngLatBounds, PointGeometry, YMap} from '@yandex/ymaps3-types';
 import {worldToPixels} from '@yandex/ymaps3-world-utils';
 
-function boundsToLeftUpperPoint(bounds: LngLatBounds): {
+export function boundsToCornerPoints(bounds: LngLatBounds): {
     leftUpperCorner: LngLat;
     leftLowerCorner: LngLat;
     rightUpperCorner: LngLat;
@@ -12,7 +12,7 @@ function boundsToLeftUpperPoint(bounds: LngLatBounds): {
 }
 
 export function leftUpperPointToPointGeometry(bounds: LngLatBounds): PointGeometry {
-    const {leftUpperCorner} = boundsToLeftUpperPoint(bounds);
+    const {leftUpperCorner} = boundsToCornerPoints(bounds);
 
     const pointGeometry: PointGeometry = {
         type: 'Point',
@@ -25,7 +25,7 @@ export function leftUpperPointToPointGeometry(bounds: LngLatBounds): PointGeomet
 export function boundsToWidthHeight(root: YMap, bounds: LngLatBounds): {width: number; height: number} {
     const {zoom, projection} = root;
 
-    const {leftUpperCorner, leftLowerCorner, rightUpperCorner} = boundsToLeftUpperPoint(bounds);
+    const {leftUpperCorner, leftLowerCorner, rightUpperCorner} = boundsToCornerPoints(bounds);
 
     const leftUpperCornerWorldCoords = projection.toWorldCoordinates(leftUpperCorner);
     const leftUpperCornerPixelCoords = worldToPixels(leftUpperCornerWorldCoords, zoom);

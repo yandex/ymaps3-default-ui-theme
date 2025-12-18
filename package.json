@@ -2,6 +2,10 @@
   "version": "0.0.23",
   "name": "@yandex/ymaps3-default-ui-theme",
   "description": "Yandex Maps JS API 3.0 example @yandex/ymaps3-default-ui-theme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yandex/ymaps3-default-ui-theme.git"
+  },
   "types": "./dist/types/index.d.ts",
   "main": "./dist/esm/index.mjs",
   "scripts": {

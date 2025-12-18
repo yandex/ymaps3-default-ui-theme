@@ -5,6 +5,10 @@ on:
   push:
     tags: ["*"]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   release:
 
@@ -35,4 +39,4 @@ jobs:
 
     - name: Publish
       run: |
-        NPM_TOKEN=${{ secrets.NPM_TOKEN }} npm publish ./ --access public
+        npm publish ./ --access public

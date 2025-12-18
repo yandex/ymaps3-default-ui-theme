@@ -70,4 +70,3 @@ CI described here
 For it to work, you need to declare two secrets in the GitHub Action:
 
 - `APIKEY` - To run autotests on the JS API https://yandex.ru/dev/maps/jsapi/doc/3.0/quickstart.html#get-api-key
-- `NPM_TOKEN` - To publish your package to npm

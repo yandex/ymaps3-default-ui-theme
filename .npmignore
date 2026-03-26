@@ -12,7 +12,7 @@
 .vscode
 jest.config.js
 node_modules
-src
+tools
 tests
 .DS_Store
 example

@@ -38,7 +38,7 @@
     "@typescript-eslint/eslint-plugin": "6.0.0",
     "@typescript-eslint/parser": "6.0.0",
     "@yandex/ymaps3-cli": "^0.0.16",
-    "@yandex/ymaps3-types": "^1.0.18033998",
+    "@yandex/ymaps3-types": "^1.0.19017058",
     "@yandex/ymaps3-world-utils": "^0.0.18176872",
     "autoprefixer": "^10.4.19",
     "babel-jest": "^30.2.0",

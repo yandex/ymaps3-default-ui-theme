@@ -13,7 +13,7 @@ module.exports = (args, env, dir = process.cwd()) => {
     return {
         ...coreWebpackModule,
         experiments: {outputModule: true},
-        entry: {index: {import: './src/index.ts', library: {type: 'module'}}},
+        entry: {index: {import: './src/index.ts', library: {type: 'modern-module'}}},
         output: {...coreWebpackModule.output, path: path.resolve(dir, 'dist/esm')},
         plugins: [new MiniCssExtractPlugin()],
         module: {

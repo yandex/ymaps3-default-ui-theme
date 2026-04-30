@@ -40,7 +40,7 @@ export class YMapDefaultRulerPoint extends ymaps3.YMapComplexEntity<YMapDefaultR
         this._tooltipMarker = this._createTooltipMarker(state);
         this.addChild(this._tooltipMarker);
         this._measurementsElement.classList.toggle(HIDDEN_CLASS_NAME, !this._isLastPoint || state.totalCount === 1);
-        this._actionsElement.classList.toggle(HIDDEN_CLASS_NAME, !this._isLastPoint || state.totalCount === 1);
+        this._actionsElement.classList.toggle(HIDDEN_CLASS_NAME, this._props.editable === false || !this._isLastPoint || state.totalCount === 1);
 
         this._listener = new ymaps3.YMapListener({
             onMouseEnter: (object) => {

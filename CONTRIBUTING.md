@@ -6,6 +6,7 @@ To get started:
 
 ```sh
 nvm use
+npm ci
 npm start
 ```
 

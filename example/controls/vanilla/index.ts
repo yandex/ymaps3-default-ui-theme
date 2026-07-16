@@ -11,7 +11,7 @@ async function main() {
 
     map = new YMap(
         document.getElementById('app'),
-        {location: LOCATION, showScaleInCopyrights: true, behaviors: ENABLED_BEHAVIORS},
+        {location: LOCATION, showScaleInCopyrights: true, behaviors: ENABLED_BEHAVIORS, theme: 'dark'},
         [new YMapDefaultSchemeLayer({}), new YMapDefaultFeaturesLayer({})]
     );
 

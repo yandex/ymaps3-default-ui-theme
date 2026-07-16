@@ -59,6 +59,7 @@ export class YMapTiltControl extends ymaps3.YMapComplexEntity<YMapTiltControlPro
 }
 
 const TILT_CONTROL_CLASS = 'ymaps3--tilt';
+const TILT_CONTROL_DARK_CLASS = 'ymaps3--tilt_dark';
 const TILT_CONTROL_ACTIVE_CLASS = 'ymaps3--tilt_active';
 const TILT_LABEL_CLASS = 'ymaps3--tilt_label';
 const TILT_CONTROL_IN_ACTION_CLASS = 'ymaps3--tilt-control__in-action';
@@ -76,6 +77,7 @@ class InternalTiltControl extends ymaps3.YMapComplexEntity<YMapTiltControlProps>
     private _tiltIn?: HTMLElement;
     private _tiltOut?: HTMLElement;
     private _domDetach?: () => void;
+    private _unwatchThemeContext?: () => void;
 
     private _startTilt?: number;
     private _startMovePosition?: Position;
@@ -108,6 +110,10 @@ class InternalTiltControl extends ymaps3.YMapComplexEntity<YMapTiltControlProps>
         this._element.addEventListener('mousedown', this._onTiltStart);
 
         this._domDetach = ymaps3.useDomContext(this, this._element, null);
+
+        this._unwatchThemeContext = this._watchContext(ymaps3.ThemeContext, () => this._updateTheme(), {
+            immediate: true
+        });
     }
 
     protected _onDetach(): void {
@@ -115,6 +121,16 @@ class InternalTiltControl extends ymaps3.YMapComplexEntity<YMapTiltControlProps>
         this._domDetach = undefined;
         this._element?.removeEventListener('click', this._toggleMapTilt);
         this._element?.removeEventListener('mousedown', this._onTiltStart);
+        this._unwatchThemeContext?.();
+        this._unwatchThemeContext = undefined;
+    }
+
+    private _updateTheme(): void {
+        const themeCtx = this._consumeContext(ymaps3.ThemeContext);
+        if (!themeCtx || !this._element) {
+            return;
+        }
+        this._element.classList.toggle(TILT_CONTROL_DARK_CLASS, themeCtx.theme === 'dark');
     }
 
     private _toggleMapTilt = (): void => {

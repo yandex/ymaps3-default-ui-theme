@@ -1,4 +1,4 @@
-import {BaseRouteResponse, LngLat, YMapLocationRequest, RouteOptions} from '@yandex/ymaps3-types';
+import {BaseRouteResponse, LngLat, YMapLocationRequest, RouteOptions, YMapTheme} from '@yandex/ymaps3-types';
 import {YMapRouteControlProps, WaypointsArray} from '../../src';
 import {
     FROM_POINT_STYLE,
@@ -18,7 +18,8 @@ async function main() {
     const [ymaps3Vue] = await Promise.all([ymaps3.import('@yandex/ymaps3-vuefy'), ymaps3.ready]);
     const vuefy = ymaps3Vue.vuefy.bindTo(Vue);
 
-    const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls, YMapFeature} = vuefy.module(ymaps3);
+    const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls, YMapControlButton, YMapFeature} =
+        vuefy.module(ymaps3);
 
     const {YMapRouteControl, YMapDefaultMarker} = vuefy.module(await ymaps3.import('@yandex/ymaps3-default-ui-theme'));
 
@@ -28,12 +29,17 @@ async function main() {
             YMapDefaultSchemeLayer,
             YMapDefaultFeaturesLayer,
             YMapControls,
+            YMapControlButton,
             YMapFeature,
             YMapRouteControl,
             YMapDefaultMarker
         },
         setup() {
             const location = Vue.ref<YMapLocationRequest>(LOCATION);
+            const theme = Vue.ref<YMapTheme>('light');
+            const switchTheme = () => {
+                theme.value = theme.value === 'light' ? 'dark' : 'light';
+            };
             const routeType = Vue.ref<RouteOptions['type']>('driving');
             const routeResult = Vue.shallowRef<BaseRouteResponse>();
             const showFeature = Vue.ref(false);
@@ -105,6 +111,8 @@ async function main() {
                 TO_POINT_STYLE,
                 TRUCK_PARAMS,
                 location,
+                theme,
+                switchTheme,
                 routeType,
                 routeResult,
                 showFeature,
@@ -122,9 +130,12 @@ async function main() {
             };
         },
         template: `
-            <YMap :location="location" :margin="MARGIN" :ref="refMap">
+            <YMap :location="location" :margin="MARGIN" :theme="theme" :ref="refMap">
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
+                <YMapControls position="top right">
+                    <YMapControlButton text="Switch theme" :onClick="switchTheme" />
+                </YMapControls>
                 <YMapControls position="top left">
                     <YMapRouteControl 
                         :truckParameters="TRUCK_PARAMS"

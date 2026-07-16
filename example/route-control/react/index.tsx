@@ -1,4 +1,4 @@
-import {BaseRouteResponse, LngLat, YMapLocationRequest, RouteOptions} from '@yandex/ymaps3-types';
+import {BaseRouteResponse, LngLat, YMapLocationRequest, RouteOptions, YMapTheme} from '@yandex/ymaps3-types';
 import {YMapRouteControlProps, WaypointsArray} from '../../src';
 import {
     FROM_POINT_STYLE,
@@ -18,7 +18,8 @@ async function main() {
     const [ymaps3React] = await Promise.all([ymaps3.import('@yandex/ymaps3-reactify'), ymaps3.ready]);
     const reactify = ymaps3React.reactify.bindTo(React, ReactDOM);
 
-    const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls, YMapFeature} = reactify.module(ymaps3);
+    const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls, YMapControlButton, YMapFeature} =
+        reactify.module(ymaps3);
     const {YMapRouteControl, YMapDefaultMarker} = reactify.module(
         await ymaps3.import('@yandex/ymaps3-default-ui-theme')
     );
@@ -39,6 +40,9 @@ async function main() {
         const [toCoords, setToCoords] = React.useState<LngLat | undefined>();
         const [previewCoords, setPreviewCoords] = React.useState<LngLat | undefined>();
         const [waypoints, setWaypoints] = React.useState<[LngLat, LngLat]>([LOCATION.center, null]);
+        const [theme, setTheme] = React.useState<YMapTheme>('light');
+
+        const switchTheme = React.useCallback(() => setTheme((theme) => (theme === 'light' ? 'dark' : 'light')), []);
 
         const onRouteResult = React.useCallback((result: BaseRouteResponse, type: RouteOptions['type']) => {
             setRouteType(type);
@@ -104,9 +108,12 @@ async function main() {
         }, [routeResult, routeType]);
 
         return (
-            <YMap location={location} margin={MARGIN} ref={(x) => (map = x)}>
+            <YMap location={location} margin={MARGIN} theme={theme} ref={(x) => (map = x)}>
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
+                <YMapControls position="top right">
+                    <YMapControlButton text="Switch theme" onClick={switchTheme} />
+                </YMapControls>
                 <YMapControls position="top left">
                     <YMapRouteControl
                         truckParameters={TRUCK_PARAMS}

@@ -1,3 +1,4 @@
+import {YMapTheme} from '@yandex/ymaps3-types';
 import {RulerType} from '@yandex/ymaps3-types/modules/ruler';
 import {LOCATION, RULER_COORDINATES} from '../common';
 
@@ -19,6 +20,7 @@ async function main() {
             };
             const editable = Vue.ref(true);
             const rulerType = Vue.ref<RulerType>('ruler');
+            const theme = Vue.ref<YMapTheme>('light');
 
             const switchEditable = () => {
                 editable.value = !editable.value;
@@ -26,17 +28,32 @@ async function main() {
             const switchType = () => {
                 rulerType.value = rulerType.value === 'ruler' ? 'planimeter' : 'ruler';
             };
+            const switchTheme = () => {
+                theme.value = theme.value === 'light' ? 'dark' : 'light';
+            };
 
             const onFinish = () => {
                 editable.value = false;
             };
-            return {LOCATION, RULER_COORDINATES, refMap, editable, rulerType, switchEditable, switchType, onFinish};
+            return {
+                LOCATION,
+                RULER_COORDINATES,
+                refMap,
+                editable,
+                rulerType,
+                theme,
+                switchEditable,
+                switchType,
+                switchTheme,
+                onFinish
+            };
         },
         template: `
-            <YMap :location="LOCATION" :showScaleInCopyrights="true" :ref="refMap">
+            <YMap :location="LOCATION" :showScaleInCopyrights="true" :theme="theme" :ref="refMap">
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultRuler :type="rulerType" :points="RULER_COORDINATES" :editable="editable" :onFinish="onFinish" />
                 <YMapControls position="top right">
+                    <YMapControlButton @click="switchTheme" text="Switch theme" />
                     <YMapControlButton @click="switchEditable" text="Switch edit ruler" />
                 </YMapControls>
                 <YMapControls position="top left">

@@ -126,11 +126,13 @@ class InternalTiltControl extends ymaps3.YMapComplexEntity<YMapTiltControlProps>
     }
 
     private _updateTheme(): void {
-        const themeCtx = this._consumeContext(ymaps3.ThemeContext);
-        if (!themeCtx || !this._element) {
+        if (!this._element) {
             return;
         }
-        this._element.classList.toggle(TILT_CONTROL_DARK_CLASS, themeCtx.theme === 'dark');
+        // The ThemeContext may not be provisioned yet at the moment the immediate watcher fires
+        // (this entity is built in the constructor), so fall back to the map's own theme.
+        const theme = this._consumeContext(ymaps3.ThemeContext)?.theme ?? this.root?.theme;
+        this._element.classList.toggle(TILT_CONTROL_DARK_CLASS, theme === 'dark');
     }
 
     private _toggleMapTilt = (): void => {

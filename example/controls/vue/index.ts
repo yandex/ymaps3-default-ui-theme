@@ -1,3 +1,4 @@
+import {YMapTheme} from '@yandex/ymaps3-types';
 import {ENABLED_BEHAVIORS, LOCATION} from '../common';
 
 window.map = null;
@@ -7,7 +8,8 @@ async function main() {
     const [ymaps3Vue] = await Promise.all([ymaps3.import('@yandex/ymaps3-vuefy'), ymaps3.ready]);
     const vuefy = ymaps3Vue.vuefy.bindTo(Vue);
 
-    const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls} = vuefy.module(ymaps3);
+    const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls, YMapControlButton} =
+        vuefy.module(ymaps3);
 
     const {YMapGeolocationControl, YMapRotateControl, YMapRotateTiltControl, YMapTiltControl, YMapZoomControl} =
         vuefy.module(await ymaps3.import('@yandex/ymaps3-default-ui-theme'));
@@ -18,6 +20,7 @@ async function main() {
             YMapDefaultSchemeLayer,
             YMapDefaultFeaturesLayer,
             YMapControls,
+            YMapControlButton,
             YMapGeolocationControl,
             YMapRotateControl,
             YMapRotateTiltControl,
@@ -28,12 +31,20 @@ async function main() {
             const refMap = (ref: any) => {
                 window.map = ref?.entity;
             };
-            return {LOCATION, ENABLED_BEHAVIORS, refMap};
+            const theme = Vue.ref<YMapTheme>('dark');
+
+            const switchTheme = () => {
+                theme.value = theme.value === 'light' ? 'dark' : 'light';
+            };
+            return {LOCATION, ENABLED_BEHAVIORS, refMap, theme, switchTheme};
         },
         template: `
-            <YMap :location="LOCATION" :behaviors="ENABLED_BEHAVIORS" :ref="refMap">
+            <YMap :location="LOCATION" :behaviors="ENABLED_BEHAVIORS" :theme="theme" :ref="refMap">
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
+                <YMapControls position="top right">
+                    <YMapControlButton text="Switch theme" :onClick="switchTheme" />
+                </YMapControls>
                 <YMapControls position="left">
                     <YMapZoomControl />
                     <YMapGeolocationControl :zoom="11" />

@@ -1,4 +1,4 @@
-import type {Feature, SearchResponse} from '@yandex/ymaps3-types';
+import type {Feature, SearchResponse, YMapTheme} from '@yandex/ymaps3-types';
 import {LOCATION, MARGIN, initialMarkerProps, findSearchResultBoundsRange} from '../common';
 
 window.map = null;
@@ -10,7 +10,8 @@ async function main() {
 
     const {createApp, ref} = Vue;
 
-    const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls} = vuefy.module(ymaps3);
+    const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls, YMapControlButton} =
+        vuefy.module(ymaps3);
 
     const {YMapDefaultMarker} = vuefy.module(await ymaps3.import('@yandex/ymaps3-default-ui-theme'));
     const {YMapSearchControl} = vuefy.module(await ymaps3.import('@yandex/ymaps3-default-ui-theme'));
@@ -21,6 +22,7 @@ async function main() {
             YMapDefaultSchemeLayer,
             YMapDefaultFeaturesLayer,
             YMapControls,
+            YMapControlButton,
             YMapDefaultMarker,
             YMapSearchControl
         },
@@ -30,6 +32,11 @@ async function main() {
             };
 
             const location = ref(LOCATION);
+            const theme = ref<YMapTheme>('light');
+
+            const switchTheme = () => {
+                theme.value = theme.value === 'light' ? 'dark' : 'light';
+            };
 
             const searchMarkersProps = ref([initialMarkerProps]);
 
@@ -64,14 +71,26 @@ async function main() {
                 searchMarkersProps.value = searchMarkersProps.value.filter((marker) => marker !== clickedMarker);
             };
 
-            return {location, MARGIN, refMap, searchResultHandler, searchMarkersProps, onClickSearchMarkerHandler};
+            return {
+                location,
+                MARGIN,
+                refMap,
+                theme,
+                switchTheme,
+                searchResultHandler,
+                searchMarkersProps,
+                onClickSearchMarkerHandler
+            };
         },
         template: `
-            <YMap :location="location" :margin="MARGIN" :ref="refMap">
+            <YMap :location="location" :margin="MARGIN" :theme="theme" :ref="refMap">
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
                 <YMapControls position="top">
                     <YMapSearchControl :searchResult="searchResultHandler" />
+                </YMapControls>
+                <YMapControls position="top right">
+                    <YMapControlButton text="Switch theme" :onClick="switchTheme" />
                 </YMapControls>
 
                 <YMapDefaultMarker

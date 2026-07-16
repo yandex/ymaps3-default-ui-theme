@@ -5,6 +5,7 @@ import {CLICK_TOLERANCE_PX, Position, radToDeg, toggleTilt} from '../utils/angle
 import './YMapTiltControl.css';
 
 const TILT_CONTROL_CLASS = 'ymaps3--rotate-tilt_tilt';
+const TILT_CONTROL_DARK_CLASS = 'ymaps3--rotate-tilt_tilt__dark';
 const TILT_CONTROL_IN_ACTION_CLASS = 'ymaps3--rotate-tilt_tilt__in-action';
 const TILT_CONTROL_TILTED_CLASS = 'ymaps3--rotate-tilt_tilt__tilted';
 
@@ -12,6 +13,7 @@ export class YMapTiltControl extends ymaps3.YMapComplexEntity<YMapRotateTiltCont
     static readonly __implName = 'YMapTiltControl';
     private _element?: HTMLElement;
     private _domDetach?: () => void;
+    private _unwatchThemeContext?: () => void;
 
     private _listener!: YMapListener;
     private _startTilt?: number;
@@ -35,6 +37,10 @@ export class YMapTiltControl extends ymaps3.YMapComplexEntity<YMapRotateTiltCont
         this._element.addEventListener('mousedown', this._onTiltStart);
 
         this._domDetach = ymaps3.useDomContext(this, this._element, null);
+
+        this._unwatchThemeContext = this._watchContext(ymaps3.ThemeContext, () => this._updateTheme(), {
+            immediate: true
+        });
     }
 
     protected _onDetach(): void {
@@ -43,6 +49,18 @@ export class YMapTiltControl extends ymaps3.YMapComplexEntity<YMapRotateTiltCont
         this._domDetach?.();
         this._domDetach = undefined;
         this._element = undefined;
+        this._unwatchThemeContext?.();
+        this._unwatchThemeContext = undefined;
+    }
+
+    private _updateTheme(): void {
+        if (!this._element) {
+            return;
+        }
+        // The ThemeContext may not be provisioned yet at the moment the immediate watcher fires
+        // (this entity is built in the constructor), so fall back to the map's own theme.
+        const theme = this._consumeContext(ymaps3.ThemeContext)?.theme ?? this.root?.theme;
+        this._element.classList.toggle(TILT_CONTROL_DARK_CLASS, theme === 'dark');
     }
 
     private _toggleMapTilt = (): void => {

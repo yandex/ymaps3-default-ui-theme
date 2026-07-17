@@ -13,7 +13,6 @@ describe('YMapZoomControl', () => {
             });
             const controls = new ymaps3.YMapControls({position: 'right'});
             const zoomControl = new YMapZoomControl({});
-            // @ts-ignore Internal and external types do not match
             controls.addChild(zoomControl);
             map.addChild(controls);
 
@@ -44,7 +43,6 @@ describe('YMapZoomControl', () => {
             });
             const controls = new ymaps3.YMapControls({position: 'right'});
             const zoomControl = new YMapZoomControl({});
-            // @ts-ignore Internal and external types do not match
             controls.addChild(zoomControl);
             map.addChild(controls);
 

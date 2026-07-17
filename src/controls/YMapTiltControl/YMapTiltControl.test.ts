@@ -12,7 +12,6 @@ describe('YMapTiltControl', () => {
         map = new ymaps3.YMap(container, {location: {center: CENTER, zoom: 0}, theme});
         const controls = new ymaps3.YMapControls({position: 'right'});
         const tiltControl = new YMapTiltControl({});
-        // @ts-ignore Internal and external types do not match
         controls.addChild(tiltControl);
         map.addChild(controls);
     };

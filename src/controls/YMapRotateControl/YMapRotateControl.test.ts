@@ -12,7 +12,6 @@ describe('YMapRotateControl', () => {
         map = new ymaps3.YMap(container, {location: {center: CENTER, zoom: 0}, theme});
         const controls = new ymaps3.YMapControls({position: 'right'});
         const rotateControl = new YMapRotateControl({});
-        // @ts-ignore Internal and external types do not match
         controls.addChild(rotateControl);
         map.addChild(controls);
     };

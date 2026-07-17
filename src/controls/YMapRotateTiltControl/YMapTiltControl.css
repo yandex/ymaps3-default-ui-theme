@@ -20,6 +20,15 @@
     color: #050d33;
 }
 
+.ymaps3--rotate-tilt_tilt__dark {
+    color: #ccc;
+    background-color: #212326;
+}
+
+.ymaps3--rotate-tilt_tilt__dark:hover {
+    color: #fff;
+}
+
 .ymaps3--rotate-tilt_tilt__tilted {
     color: #fff;
     background-color: #196dff;

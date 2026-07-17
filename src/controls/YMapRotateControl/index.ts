@@ -59,6 +59,7 @@ export class YMapRotateControl extends ymaps3.YMapComplexEntity<YMapRotateContro
 }
 
 const ROTATE_CONTROL_CLASS = 'ymaps3--rotate-control';
+const ROTATE_CONTROL_DARK_CLASS = 'ymaps3--rotate-control_dark';
 
 export class InternalRotateControl extends ymaps3.YMapComplexEntity<YMapRotateControlProps, DefaultProps> {
     static readonly __implName = 'InternalRotateControl';
@@ -70,6 +71,7 @@ export class InternalRotateControl extends ymaps3.YMapComplexEntity<YMapRotateCo
     private _controlCenterPosition?: Position;
     private _startMovePosition?: Position;
     private _startAzimuth?: number;
+    private _unwatchThemeContext?: () => void;
 
     constructor(props: YMapRotateControlProps) {
         super(props);
@@ -87,6 +89,10 @@ export class InternalRotateControl extends ymaps3.YMapComplexEntity<YMapRotateCo
         this._element.addEventListener('mousedown', this._onRotateStart);
 
         this._domDetach = ymaps3.useDomContext(this, this._element, null);
+
+        this._unwatchThemeContext = this._watchContext(ymaps3.ThemeContext, () => this._updateTheme(), {
+            immediate: true
+        });
     }
 
     protected _onDetach(): void {
@@ -94,6 +100,18 @@ export class InternalRotateControl extends ymaps3.YMapComplexEntity<YMapRotateCo
         this._element?.removeEventListener('mousedown', this._onRotateStart);
         this._domDetach?.();
         this._domDetach = undefined;
+        this._unwatchThemeContext?.();
+        this._unwatchThemeContext = undefined;
+    }
+
+    private _updateTheme(): void {
+        if (!this._element) {
+            return;
+        }
+        // The ThemeContext may not be provisioned yet at the moment the immediate watcher fires
+        // (this entity is built in the constructor), so fall back to the map's own theme.
+        const theme = this._consumeContext(ymaps3.ThemeContext)?.theme ?? this.root?.theme;
+        this._element.classList.toggle(ROTATE_CONTROL_DARK_CLASS, theme === 'dark');
     }
 
     private _onMapUpdate({azimuth}: YMapCameraRequest): void {

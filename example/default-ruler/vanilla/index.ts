@@ -35,6 +35,13 @@ async function main() {
     map.addChild(
         new YMapControls({position: 'top right'}, [
             new YMapControlButton({
+                text: 'Switch theme',
+                onClick: () => {
+                    const {theme} = map;
+                    map.update({theme: theme === 'light' ? 'dark' : 'light'});
+                }
+            }),
+            new YMapControlButton({
                 text: 'Switch edit ruler',
                 onClick: () => {
                     editable = !editable;

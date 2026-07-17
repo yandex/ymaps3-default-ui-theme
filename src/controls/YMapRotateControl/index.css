@@ -31,3 +31,12 @@
         color,
         background-image 0.4s;
 }
+
+.ymaps3--rotate-control_dark {
+    color: #ccc;
+    background-color: #212326;
+}
+
+.ymaps3--rotate-control_dark:hover {
+    color: #fff;
+}

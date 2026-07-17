@@ -13,7 +13,6 @@ describe('YMapZoomControl', () => {
             });
             const controls = new ymaps3.YMapControls({position: 'right'});
             const zoomControl = new YMapZoomControl({});
-            // @ts-ignore Internal and external types do not match
             controls.addChild(zoomControl);
             map.addChild(controls);
 
@@ -31,6 +30,35 @@ describe('YMapZoomControl', () => {
             map.setLocation({zoom: map.zoomRange.min});
             expect(getZoomControlStatus('out')).toBe(true);
             expect(getZoomControlStatus('in')).toBe(false);
+
+            map.destroy();
+        });
+    });
+
+    describe('dark theme', () => {
+        it('toggles the dark classes together with the map theme', () => {
+            const map = new ymaps3.YMap(container, {
+                location: {center: [0, 0], zoom: 0},
+                theme: 'light'
+            });
+            const controls = new ymaps3.YMapControls({position: 'right'});
+            const zoomControl = new YMapZoomControl({});
+            controls.addChild(zoomControl);
+            map.addChild(controls);
+
+            const zoomIn = document.querySelector('.ymaps3--zoom-control__in');
+            const zoomOut = document.querySelector('.ymaps3--zoom-control__out');
+
+            expect(zoomIn?.classList.contains('ymaps3--zoom-control__dark-in')).toBe(false);
+            expect(zoomOut?.classList.contains('ymaps3--zoom-control__dark-out')).toBe(false);
+
+            map.update({theme: 'dark'});
+            expect(zoomIn?.classList.contains('ymaps3--zoom-control__dark-in')).toBe(true);
+            expect(zoomOut?.classList.contains('ymaps3--zoom-control__dark-out')).toBe(true);
+
+            map.update({theme: 'light'});
+            expect(zoomIn?.classList.contains('ymaps3--zoom-control__dark-in')).toBe(false);
+            expect(zoomOut?.classList.contains('ymaps3--zoom-control__dark-out')).toBe(false);
 
             map.destroy();
         });

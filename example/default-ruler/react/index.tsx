@@ -1,3 +1,4 @@
+import {YMapTheme} from '@yandex/ymaps3-types';
 import {RulerType} from '@yandex/ymaps3-types/modules/ruler';
 import {LOCATION, RULER_COORDINATES} from '../common';
 
@@ -18,22 +19,25 @@ async function main() {
         const [rulerCoordinates] = useState(RULER_COORDINATES);
         const [rulerType, setRulerType] = useState<RulerType>('ruler');
         const [editable, setEditable] = useState(true);
+        const [theme, setTheme] = useState<YMapTheme>('light');
 
         const switchEditable = useCallback(() => setEditable((editable) => !editable), []);
         const switchType = useCallback(
             () => setRulerType((rulerType) => (rulerType === 'ruler' ? 'planimeter' : 'ruler')),
             []
         );
+        const switchTheme = useCallback(() => setTheme((theme) => (theme === 'light' ? 'dark' : 'light')), []);
         const onFinish = useCallback(() => setEditable(false), []);
 
         return (
             // Initialize the map and pass initialization parameters
-            <YMap location={location} showScaleInCopyrights={true} ref={(x) => (map = x)}>
+            <YMap location={location} showScaleInCopyrights={true} theme={theme} ref={(x) => (map = x)}>
                 {/* Add a map scheme layer */}
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultRuler type={rulerType} points={rulerCoordinates} editable={editable} onFinish={onFinish} />
 
                 <YMapControls position="top right">
+                    <YMapControlButton onClick={switchTheme} text="Switch theme" />
                     <YMapControlButton onClick={switchEditable} text="Switch edit ruler" />
                 </YMapControls>
                 <YMapControls position="top left">

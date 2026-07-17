@@ -6,7 +6,7 @@ window.map = null;
 main();
 async function main() {
     await ymaps3.ready;
-    const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls} = ymaps3;
+    const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls, YMapControlButton} = ymaps3;
 
     const {YMapDefaultMarker} = await ymaps3.import('@yandex/ymaps3-default-ui-theme');
     const {YMapSearchControl} = await ymaps3.import('@yandex/ymaps3-default-ui-theme');
@@ -83,6 +83,18 @@ async function main() {
         new YMapControls({position: 'top'}).addChild(
             new YMapSearchControl({
                 searchResult: searchResultHandler
+            })
+        )
+    );
+
+    map.addChild(
+        new YMapControls({position: 'top right'}).addChild(
+            new YMapControlButton({
+                text: 'Switch theme',
+                onClick: () => {
+                    const {theme} = map;
+                    map.update({theme: theme === 'light' ? 'dark' : 'light'});
+                }
             })
         )
     );

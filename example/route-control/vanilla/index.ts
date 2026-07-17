@@ -15,7 +15,7 @@ window.map = null;
 main();
 async function main() {
     await ymaps3.ready;
-    const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls} = ymaps3;
+    const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls, YMapControlButton} = ymaps3;
 
     const {YMapRouteControl, YMapDefaultMarker} = await ymaps3.import('@yandex/ymaps3-default-ui-theme');
 
@@ -103,6 +103,18 @@ async function main() {
     });
 
     map.addChild(new YMapControls({position: 'top left'}).addChild(routeControl));
+
+    map.addChild(
+        new YMapControls({position: 'top right'}).addChild(
+            new YMapControlButton({
+                text: 'Switch theme',
+                onClick: () => {
+                    const {theme} = map;
+                    map.update({theme: theme === 'light' ? 'dark' : 'light'});
+                }
+            })
+        )
+    );
 
     const getFeatures = (result: BaseRouteResponse, type: RouteOptions['type']): YMapFeature[] => {
         if (type !== 'transit') {

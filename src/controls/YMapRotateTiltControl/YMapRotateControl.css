@@ -28,6 +28,10 @@
         0 2px 6px 0 rgba(0, 0, 0, 0.2);
 }
 
+.ymaps3--rotate-tilt_rotate__ring_dark {
+    border-color: #212326;
+}
+
 .ymaps3--rotate-tilt_rotate__ring::before {
     position: absolute;
 

@@ -6,6 +6,7 @@ import './YMapRotateControl.css';
 
 const ROTATE_CONTROL_CLASS = 'ymaps3--rotate-tilt_rotate';
 const ROTATE_RING_CLASS = 'ymaps3--rotate-tilt_rotate__ring';
+const ROTATE_RING_DARK_CLASS = 'ymaps3--rotate-tilt_rotate__ring_dark';
 const ROTATE_CONTAINER_CLASS = 'ymaps3--rotate-tilt_rotate__container';
 
 export class YMapRotateControl extends ymaps3.YMapGroupEntity<YMapRotateTiltControlProps> {
@@ -14,6 +15,7 @@ export class YMapRotateControl extends ymaps3.YMapGroupEntity<YMapRotateTiltCont
     private _containerElement?: HTMLElement;
     private _ringElement?: HTMLElement;
     private _domDetach?: () => void;
+    private _unwatchThemeContext?: () => void;
 
     private _listener!: YMapListener;
     private _isClick: boolean = false;
@@ -45,6 +47,10 @@ export class YMapRotateControl extends ymaps3.YMapGroupEntity<YMapRotateTiltCont
         this._element.appendChild(this._containerElement);
 
         this._domDetach = ymaps3.useDomContext(this, this._element, this._containerElement);
+
+        this._unwatchThemeContext = this._watchContext(ymaps3.ThemeContext, () => this._updateTheme(), {
+            immediate: true
+        });
     }
 
     protected _onDetach(): void {
@@ -53,6 +59,18 @@ export class YMapRotateControl extends ymaps3.YMapGroupEntity<YMapRotateTiltCont
         this._domDetach?.();
         this._domDetach = undefined;
         this._element = undefined;
+        this._unwatchThemeContext?.();
+        this._unwatchThemeContext = undefined;
+    }
+
+    private _updateTheme(): void {
+        if (!this._ringElement) {
+            return;
+        }
+        // The ThemeContext may not be provisioned yet at the moment the immediate watcher fires
+        // (this entity is built in the constructor), so fall back to the map's own theme.
+        const theme = this._consumeContext(ymaps3.ThemeContext)?.theme ?? this.root?.theme;
+        this._ringElement.classList.toggle(ROTATE_RING_DARK_CLASS, theme === 'dark');
     }
 
     private _toggleMapRotate = (): void => {

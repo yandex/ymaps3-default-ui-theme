@@ -1,4 +1,4 @@
-import type {SearchResponse, Feature} from '@yandex/ymaps3-types';
+import type {SearchResponse, Feature, YMapTheme} from '@yandex/ymaps3-types';
 import {LOCATION, MARGIN, initialMarkerProps, findSearchResultBoundsRange} from '../common';
 
 window.map = null;
@@ -10,7 +10,8 @@ async function main() {
 
     const {useState, useCallback} = React;
 
-    const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls} = reactify.module(ymaps3);
+    const {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapControls, YMapControlButton} =
+        reactify.module(ymaps3);
 
     const {YMapDefaultMarker} = reactify.module(await ymaps3.import('@yandex/ymaps3-default-ui-theme'));
     const {YMapSearchControl} = reactify.module(await ymaps3.import('@yandex/ymaps3-default-ui-theme'));
@@ -25,6 +26,9 @@ async function main() {
     function App() {
         const [location, setLocation] = useState(LOCATION);
         const [searchMarkersProps, setSearchMarkersProps] = useState([initialMarkerProps]);
+        const [theme, setTheme] = useState<YMapTheme>('light');
+
+        const switchTheme = useCallback(() => setTheme((theme) => (theme === 'light' ? 'dark' : 'light')), []);
 
         const updateMapLocation = useCallback((searchResult: SearchResponse) => {
             if (searchResult.length !== 0) {
@@ -61,11 +65,14 @@ async function main() {
         );
 
         return (
-            <YMap location={location} margin={MARGIN} ref={(x) => (map = x)}>
+            <YMap location={location} margin={MARGIN} theme={theme} ref={(x) => (map = x)}>
                 <YMapDefaultSchemeLayer />
                 <YMapDefaultFeaturesLayer />
                 <YMapControls position="top">
                     <YMapSearchControl searchResult={searchResultHandler} />
+                </YMapControls>
+                <YMapControls position="top right">
+                    <YMapControlButton text="Switch theme" onClick={switchTheme} />
                 </YMapControls>
 
                 {searchMarkersProps.map((marker) => (
